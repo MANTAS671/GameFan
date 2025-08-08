@@ -16,7 +16,7 @@
         body {
             font-family: 'Comfortaa', sans-serif;
             background-color: #f5f5dc;
-            background-image: url('https://picsum.photos/seed/village-field-computer/1080/1920.jpg');
+            background-image: url('https://sfile.chatglm.cn/images-ppt/02d28f563c7b.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -71,6 +71,16 @@
             margin-bottom: 20px;
             position: relative;
             z-index: 1;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
         
         .description {
@@ -106,12 +116,48 @@
             display: none;
             position: relative;
             z-index: 1;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .question-counter {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #5d4037;
         }
         
         .question {
             font-size: 28px;
             margin-bottom: 20px;
             color: #5d4037;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         
         .answers {
@@ -127,11 +173,23 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 20px;
+            animation: fadeIn 0.5s ease-in-out;
         }
         
         .answer:hover {
             background-color: #c8e6c9;
             transform: translateX(5px);
+        }
+        
+        .answer.selected {
+            background-color: #a5d6a7;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .answer.disabled {
+            opacity: 0.6;
+            pointer-events: none;
         }
         
         .answer input {
@@ -143,12 +201,21 @@
             text-align: center;
             margin-bottom: 20px;
             color: #2e7d32;
+            animation: bounceIn 1s ease-in-out;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
         }
         
         .result-description {
             font-size: 24px;
             text-align: center;
             margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
         }
         
         .frog {
@@ -156,19 +223,26 @@
             width: 150px;
             height: 150px;
             margin: 20px auto;
-            background-image: url('https://picsum.photos/seed/funny-green-frog/150/150.jpg');
+            background-image: url('https://sfile.chatglm.cn/images-ppt/9b652a81470b.jpg');
             background-size: cover;
             border-radius: 50%;
             animation: bounce 1s infinite;
         }
         
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
+        .computer-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
         .monkey {
@@ -177,10 +251,28 @@
             right: 20px;
             width: 80px;
             height: 80px;
-            background-image: url('https://picsum.photos/seed/funny-monkey-emoji/80/80.jpg');
+            background-image: url('https://sfile.chatglm.cn/images-ppt/9f01ac7cbb6f.jpg');
             background-size: cover;
             border-radius: 50%;
             z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .aleksey-quote {
+            font-style: italic;
+            color: #5d4037;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 18px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.5s;
         }
         
         @media (max-width: 768px) {
@@ -220,8 +312,14 @@
         </div>
         
         <div class="quiz-container">
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <div class="question-counter"></div>
+            <div class="computer-image"></div>
             <div class="question"></div>
             <div class="answers"></div>
+            <div class="aleksey-quote"></div>
             <button class="next-btn">Далее</button>
         </div>
         
@@ -245,7 +343,9 @@
                     { text: "В кредит, как нормальные люди", points: 1 },
                     { text: "Шо це таке?", points: 0 },
                     { text: "Поставлю, если место найду", points: 1 }
-                ]
+                ],
+                image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
+                quote: "Лучший апгрейд - это тот, который куплен в кредит!"
             },
             {
                 question: "Как ты реагируешь, если друг купил себе колбасу и не поделился?",
@@ -254,7 +354,9 @@
                     { text: "Съедаю его носки", points: 0 },
                     { text: "Говорю: \"Нахуй с пляжа\"", points: 2 },
                     { text: "Завидую молча, но ночью пишу пассивно-агрессивные сообщения", points: 1 }
-                ]
+                ],
+                image: "https://sfile.chatglm.cn/images-ppt/1fe0411bb968.jpg",
+                quote: "Колбаса - это как новый проц: если не поделился, то не друг!"
             },
             {
                 question: "Ты видишь свою девушку в кустах с другим парнем. Что ты делаешь?",
@@ -263,7 +365,9 @@
                     { text: "Кричу: \"Всё ясно, я не дурак\"", points: 1 },
                     { text: "Разворачиваюсь и сижу потом 2 часа в туалете", points: 2 },
                     { text: "Делаю селфи и выкладываю сторис \"лучше без неё\"", points: 0 }
-                ]
+                ],
+                image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg",
+                quote: "Туалет - лучшее место для философских размышлений..."
             },
             {
                 question: "Какой у тебя идеальный выходной?",
@@ -272,7 +376,9 @@
                     { text: "Вырвать траву в поле", points: 1 },
                     { text: "Пойти в кредит за новым процом", points: 2 },
                     { text: "Сидеть в туалете и обдумывать жизнь", points: 1 }
-                ]
+                ],
+                image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
+                quote: "Выходной - это когда прошел Assassin's Creed и вырвал траву!"
             },
             {
                 question: "Что ты скажешь, когда увидишь, что у друга новый компьютер?",
@@ -281,7 +387,9 @@
                     { text: "Нахуй с пляжа", points: 1 },
                     { text: "Та хай...", points: 0 },
                     { text: "Я бы тоже купил, но у меня девушка", points: 1 }
-                ]
+                ],
+                image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
+                quote: "Завидовать чужому железу - нормально, главное не показывать это!"
             },
             {
                 question: "Как ты относишься к своим носкам?",
@@ -290,7 +398,9 @@
                     { text: "Всегда покупаю новые, в кредит", points: 1 },
                     { text: "Ношу до последней дырки", points: 1 },
                     { text: "Не ношу носки, это не по-сельски", points: 0 }
-                ]
+                ],
+                image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png",
+                quote: "Дырявые носки - это как старый проц: работают, но не так как надо!"
             },
             {
                 question: "Что для тебя S.T.A.L.K.E.R. 2?",
@@ -299,7 +409,9 @@
                     { text: "Подожду, пока куплю новый проц", points: 1 },
                     { text: "Уже прошел на старом компьютере", points: 0 },
                     { text: "Шо це таке?", points: 0 }
-                ]
+                ],
+                image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg",
+                quote: "S.T.A.L.K.E.R. 2 - это как новый проц: мечтаю, но не могу позволить!"
             }
         ];
 
@@ -344,6 +456,10 @@
         const resultTitleElement = document.querySelector('.result-title');
         const resultDescriptionElement = document.querySelector('.result-description');
         const frogElement = document.querySelector('.frog');
+        const progressBar = document.querySelector('.progress-bar');
+        const questionCounter = document.querySelector('.question-counter');
+        const computerImage = document.querySelector('.computer-image');
+        const alekseyQuote = document.querySelector('.aleksey-quote');
 
         // Обработчики событий
         startBtn.addEventListener('click', startQuiz);
@@ -367,6 +483,19 @@
             const question = questions[currentQuestion];
             questionElement.textContent = question.question;
             
+            // Обновление прогресса
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            // Обновление счетчика вопросов
+            questionCounter.textContent = `Вопрос ${currentQuestion + 1} из ${questions.length}`;
+            
+            // Обновление изображения компьютера
+            computerImage.style.backgroundImage = `url(${question.image})`;
+            
+            // Обновление цитаты Алексея
+            alekseyQuote.textContent = `"${question.quote}"`;
+            
             answersElement.innerHTML = '';
             
             question.answers.forEach((answer, index) => {
@@ -387,6 +516,7 @@
         // Функция выбора ответа
         function selectAnswer(index) {
             const selectedAnswer = questions[currentQuestion].answers[index];
+            const answerElements = document.querySelectorAll('.answer');
             
             // Проверка на одинаковые ответы (пасхалка с жабой)
             if (lastSelectedAnswer !== null && lastSelectedAnswer === index) {
@@ -404,19 +534,17 @@
             selectedAnswers.push(index);
             score += selectedAnswer.points;
             
-            // Отображение кнопки "Далее"
-            nextBtn.style.display = 'block';
-            
-            // Блокировка выбора других ответов
-            const answerElements = document.querySelectorAll('.answer');
+            // Визуальное выделение выбранного ответа
             answerElements.forEach((element, i) => {
                 if (i === index) {
-                    element.style.backgroundColor = '#a5d6a7';
+                    element.classList.add('selected');
                 } else {
-                    element.style.pointerEvents = 'none';
-                    element.style.opacity = '0.6';
+                    element.classList.add('disabled');
                 }
             });
+            
+            // Отображение кнопки "Далее"
+            nextBtn.style.display = 'block';
         }
 
         // Функция перехода к следующему вопросу
@@ -424,7 +552,12 @@
             currentQuestion++;
             
             if (currentQuestion < questions.length) {
-                showQuestion();
+                // Анимация перехода
+                quizContainer.style.animation = 'none';
+                setTimeout(() => {
+                    quizContainer.style.animation = 'fadeIn 0.5s ease-in-out';
+                    showQuestion();
+                }, 10);
             } else {
                 showResults();
             }
