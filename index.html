@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>А ты точно не Алексей?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Indie+Flower&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comfortaa', sans-serif;
+            background-color: #f5f5dc;
+            background-image: url('https://picsum.photos/seed/village-field-computer/1080/1920.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 720px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(76, 175, 80, 0.2);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .container::after {
+            content: "";
+            position: absolute;
+            bottom: -70px;
+            left: -70px;
+            width: 250px;
+            height: 250px;
+            background-color: rgba(139, 69, 19, 0.1);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        h1 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 50px;
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .description {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .start-btn, .next-btn, .restart-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .start-btn:hover, .next-btn:hover, .restart-btn:hover {
+            background-color: #388e3c;
+            transform: scale(1.05);
+        }
+        
+        .quiz-container, .results-container {
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .question {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #5d4037;
+        }
+        
+        .answers {
+            margin-bottom: 30px;
+        }
+        
+        .answer {
+            display: block;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 20px;
+        }
+        
+        .answer:hover {
+            background-color: #c8e6c9;
+            transform: translateX(5px);
+        }
+        
+        .answer input {
+            margin-right: 10px;
+        }
+        
+        .result-title {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2e7d32;
+        }
+        
+        .result-description {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .frog {
+            display: none;
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background-image: url('https://picsum.photos/seed/funny-green-frog/150/150.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .monkey {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background-image: url('https://picsum.photos/seed/funny-monkey-emoji/80/80.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+            
+            .description {
+                font-size: 20px;
+            }
+            
+            .question {
+                font-size: 24px;
+            }
+            
+            .answer {
+                font-size: 18px;
+                padding: 12px;
+            }
+            
+            .result-title {
+                font-size: 30px;
+            }
+            
+            .result-description {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="start-page">
+            <h1>А ты точно не Алексей?</h1>
+            <p class="description">Пройди этот тест и узнай, насколько сильно ты завидуешь чужому апгрейду. Осторожно: в процессе возможны колбасные конфликты.</p>
+            <button class="start-btn">Начать тест</button>
+        </div>
+        
+        <div class="quiz-container">
+            <div class="question"></div>
+            <div class="answers"></div>
+            <button class="next-btn">Далее</button>
+        </div>
+        
+        <div class="results-container">
+            <h2 class="result-title"></h2>
+            <p class="result-description"></p>
+            <div class="frog"></div>
+            <button class="restart-btn">Пройти заново</button>
+        </div>
+        
+        <div class="monkey"></div>
+    </div>
+
+    <script>
+        // Вопросы и варианты ответов с баллами
+        const questions = [
+            {
+                question: "Ты купил SSD на 2 ТБ. Что скажешь?",
+                answers: [
+                    { text: "С заделом на будущее", points: 2 },
+                    { text: "В кредит, как нормальные люди", points: 1 },
+                    { text: "Шо це таке?", points: 0 },
+                    { text: "Поставлю, если место найду", points: 1 }
+                ]
+            },
+            {
+                question: "Как ты реагируешь, если друг купил себе колбасу и не поделился?",
+                answers: [
+                    { text: "Смотрю с осуждением", points: 1 },
+                    { text: "Съедаю его носки", points: 0 },
+                    { text: "Говорю: \"Нахуй с пляжа\"", points: 2 },
+                    { text: "Завидую молча, но ночью пишу пассивно-агрессивные сообщения", points: 1 }
+                ]
+            },
+            {
+                question: "Ты видишь свою девушку в кустах с другим парнем. Что ты делаешь?",
+                answers: [
+                    { text: "Устраиваю скандал", points: 1 },
+                    { text: "Кричу: \"Всё ясно, я не дурак\"", points: 1 },
+                    { text: "Разворачиваюсь и сижу потом 2 часа в туалете", points: 2 },
+                    { text: "Делаю селфи и выкладываю сторис \"лучше без неё\"", points: 0 }
+                ]
+            },
+            {
+                question: "Какой у тебя идеальный выходной?",
+                answers: [
+                    { text: "Пройти Assassin's Creed в 10-й раз", points: 2 },
+                    { text: "Вырвать траву в поле", points: 1 },
+                    { text: "Пойти в кредит за новым процом", points: 2 },
+                    { text: "Сидеть в туалете и обдумывать жизнь", points: 1 }
+                ]
+            },
+            {
+                question: "Что ты скажешь, когда увидишь, что у друга новый компьютер?",
+                answers: [
+                    { text: "Завидую молча", points: 2 },
+                    { text: "Нахуй с пляжа", points: 1 },
+                    { text: "Та хай...", points: 0 },
+                    { text: "Я бы тоже купил, но у меня девушка", points: 1 }
+                ]
+            },
+            {
+                question: "Как ты относишься к своим носкам?",
+                answers: [
+                    { text: "Хожу в дырявых, но с \"заделом на будущее\"", points: 2 },
+                    { text: "Всегда покупаю новые, в кредит", points: 1 },
+                    { text: "Ношу до последней дырки", points: 1 },
+                    { text: "Не ношу носки, это не по-сельски", points: 0 }
+                ]
+            },
+            {
+                question: "Что для тебя S.T.A.L.K.E.R. 2?",
+                answers: [
+                    { text: "Мечта всей жизни", points: 2 },
+                    { text: "Подожду, пока куплю новый проц", points: 1 },
+                    { text: "Уже прошел на старом компьютере", points: 0 },
+                    { text: "Шо це таке?", points: 0 }
+                ]
+            }
+        ];
+
+        // Результаты в зависимости от набранных баллов
+        const results = [
+            {
+                minScore: 0,
+                maxScore: 7,
+                title: "🧘‍♂️ Ты — нормальный человек",
+                description: "У тебя всё в порядке: и носки, и чувства, и ПК.<br>Алексей бы тебе очень завидовал, но сказал бы: \"та хай…\""
+            },
+            {
+                minScore: 8,
+                maxScore: 13,
+                title: "💾 Ты — полуАлексей",
+                description: "Ты балансируешь между здравым смыслом и проклятием апгрейда.<br>Смотрел на траву — думал, не зря ли живёшь."
+            },
+            {
+                minScore: 14,
+                maxScore: 20,
+                title: "🧦 Ты — 100% Алексей",
+                description: "Ты живёшь за счёт апгрейдов и духовных страданий.<br>Завидуешь, но молчишь.<br>Плачешь — но в туалете, и без свидетелей.<br>Ты — сельский киберпанк."
+            }
+        ];
+
+        // Переменные для отслеживания состояния викторины
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedAnswers = [];
+        let sameAnswersCount = 0;
+        let lastSelectedAnswer = null;
+
+        // Элементы DOM
+        const startPage = document.querySelector('.start-page');
+        const quizContainer = document.querySelector('.quiz-container');
+        const resultsContainer = document.querySelector('.results-container');
+        const startBtn = document.querySelector('.start-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const restartBtn = document.querySelector('.restart-btn');
+        const questionElement = document.querySelector('.question');
+        const answersElement = document.querySelector('.answers');
+        const resultTitleElement = document.querySelector('.result-title');
+        const resultDescriptionElement = document.querySelector('.result-description');
+        const frogElement = document.querySelector('.frog');
+
+        // Обработчики событий
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        // Функция начала викторины
+        function startQuiz() {
+            startPage.style.display = 'none';
+            quizContainer.style.display = 'block';
+            currentQuestion = 0;
+            score = 0;
+            selectedAnswers = [];
+            sameAnswersCount = 0;
+            lastSelectedAnswer = null;
+            showQuestion();
+        }
+
+        // Функция отображения вопроса
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            questionElement.textContent = question.question;
+            
+            answersElement.innerHTML = '';
+            
+            question.answers.forEach((answer, index) => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer';
+                answerElement.innerHTML = `
+                    <input type="radio" name="answer" id="answer${index}" value="${index}">
+                    <label for="answer${index}">${answer.text}</label>
+                `;
+                
+                answerElement.addEventListener('click', () => selectAnswer(index));
+                answersElement.appendChild(answerElement);
+            });
+            
+            nextBtn.style.display = 'none';
+        }
+
+        // Функция выбора ответа
+        function selectAnswer(index) {
+            const selectedAnswer = questions[currentQuestion].answers[index];
+            
+            // Проверка на одинаковые ответы (пасхалка с жабой)
+            if (lastSelectedAnswer !== null && lastSelectedAnswer === index) {
+                sameAnswersCount++;
+                if (sameAnswersCount >= 2) {
+                    frogElement.style.display = 'block';
+                }
+            } else {
+                sameAnswersCount = 0;
+                frogElement.style.display = 'none';
+            }
+            lastSelectedAnswer = index;
+            
+            // Сохранение выбранного ответа и баллов
+            selectedAnswers.push(index);
+            score += selectedAnswer.points;
+            
+            // Отображение кнопки "Далее"
+            nextBtn.style.display = 'block';
+            
+            // Блокировка выбора других ответов
+            const answerElements = document.querySelectorAll('.answer');
+            answerElements.forEach((element, i) => {
+                if (i === index) {
+                    element.style.backgroundColor = '#a5d6a7';
+                } else {
+                    element.style.pointerEvents = 'none';
+                    element.style.opacity = '0.6';
+                }
+            });
+        }
+
+        // Функция перехода к следующему вопросу
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Функция отображения результатов
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            
+            // Определение результата на основе набранных баллов
+            let result;
+            for (const r of results) {
+                if (score >= r.minScore && score <= r.maxScore) {
+                    result = r;
+                    break;
+                }
+            }
+            
+            resultTitleElement.innerHTML = result.title;
+            resultDescriptionElement.innerHTML = result.description;
+        }
+
+        // Функция перезапуска викторины
+        function restartQuiz() {
+            resultsContainer.style.display = 'none';
+            startPage.style.display = 'block';
+            frogElement.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
