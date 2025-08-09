@@ -3,140 +3,116 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-<meta name="theme-color" content="#111827" />
-<title>А ты точно не Алексей? — Next‑Gen</title>
+<meta name="theme-color" content="#0b0f14" />
+<title>Next Gen 1.2 — Ты точно не Алексей?</title>
 <link rel="preconnect" href="https://sfile.chatglm.cn" crossorigin>
 <style>
   :root{
-    --bg: #0b0f14;            /* тёмный фон по умолчанию */
-    --bg-2: #121821;
-    --card: rgba(255,255,255,.06);
-    --card-strong: rgba(255,255,255,.12);
-    --ink: #e6eefc;
-    --muted:#93a3b8;
-    --accent:#7cde7b;
-    --accent-2:#3fb24a;
-    --danger:#ff6b6b;
-    --shadow: 0 12px 36px rgba(0,0,0,.45);
-    --radius: 16px;
-    --tap: 14px;
+    --bg:#070b11; --bg2:#0d131c; --ink:#e8f0ff; --muted:#9db0c9;
+    --card: rgba(255,255,255,.06); --card2: rgba(255,255,255,.12);
+    --acc:#7dffb0; --acc2:#38d47a; --blue:#60a5fa; --vio:#b794f4; --amber:#fbbf24; --rose:#fb7185;
+    --glass: rgba(255,255,255,.07);
+    --shadow: 0 18px 56px rgba(0,0,0,.5); --r:20px;
   }
   @media (prefers-color-scheme: light){
-    :root{
-      --bg:#f5f7fb; --bg-2:#fff;
-      --card: rgba(0,0,0,.06);
-      --card-strong: rgba(0,0,0,.08);
-      --ink:#0f172a; --muted:#475569;
-      --accent:#36be59; --accent-2:#2f9c4b;
-      --shadow: 0 10px 24px rgba(0,0,0,.12);
-    }
+    :root{ --bg:#f5f7fb; --bg2:#ffffff; --ink:#0e172a; --muted:#4a5d74; --card: rgba(0,0,0,.05); --card2: rgba(0,0,0,.08); --acc:#22c55e; --acc2:#16a34a; --blue:#2563eb; --vio:#7c3aed; --amber:#d97706; --rose:#e11d48; --shadow: 0 14px 34px rgba(0,0,0,.16) }
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0; font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-    color:var(--ink); background:var(--bg) center/cover no-repeat;
+    color:var(--ink); background:radial-gradient(90% 65% at 50% -20%,#112136 0%,transparent 70%), var(--bg);
     min-height:100dvh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     -webkit-tap-highlight-color: transparent; touch-action:manipulation;
     display:grid; place-items:center; padding:12px;
+    overflow-x:hidden;
   }
-  .wrap{ width:100%; max-width:720px; background:linear-gradient(180deg,var(--bg-2),transparent), var(--card);
-    border-radius:24px; box-shadow:var(--shadow); padding:16px; position:relative; overflow:hidden }
+  .wrap{ width:100%; max-width:900px; background:linear-gradient(180deg,var(--bg2) 0%,transparent 100%), var(--glass);
+    border:1px solid var(--card2); border-radius:28px; box-shadow:var(--shadow); padding:16px; position:relative; overflow:hidden }
 
-  /* декоративные шары */
-  .blob,.blob2{ position:absolute; inset:auto; width:260px; height:260px; border-radius:50%; filter:blur(1px); opacity:.25; pointer-events:none }
-  .blob{ right:-90px; top:-90px; background:radial-gradient(closest-side,#31c48d,transparent) }
-  .blob2{ left:-110px; bottom:-110px; background:radial-gradient(closest-side,#60a5fa,transparent) }
+  /* декоративные объекты */
+  .blob,.blob2,.blob3{ position:absolute; border-radius:50%; filter:blur(2px); opacity:.28; pointer-events:none }
+  .blob{ right:-120px; top:-120px; width:320px; height:320px; background:radial-gradient(closest-side,var(--acc),transparent) }
+  .blob2{ left:-140px; bottom:-140px; width:360px; height:360px; background:radial-gradient(closest-side,var(--blue),transparent) }
+  .blob3{ right:20%; bottom:-160px; width:300px; height:300px; background:radial-gradient(closest-side,var(--vio),transparent) }
 
+  /* общие */
   .screen{ position:relative; z-index:1; animation:fade .28s ease both }
   @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
-
-  h1{ margin:6px 8px 8px; text-align:center; font-weight:850; letter-spacing:.2px;
-      font-size:clamp(22px,5.6vw,34px) }
-  .lead{ margin:0 auto 12px; text-align:center; color:var(--muted);
-      font-size:clamp(14px,3.8vw,18px); background:var(--card-strong); padding:12px; border-radius:14px }
+  h1{ margin:6px 8px 8px; text-align:center; font-weight:900; letter-spacing:.3px; font-size:clamp(22px,5.6vw,40px);
+      background:linear-gradient(90deg,#a7f3d0,#93c5fd,#e9d5ff); -webkit-background-clip:text; background-clip:text; color:transparent }
+  .lead{ margin:0 auto 12px; text-align:center; color:var(--muted); font-size:clamp(14px,3.8vw,18px); background:var(--card2); padding:12px; border-radius:16px }
 
   .row{ display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap }
-  .btn{ appearance:none; border:0; cursor:pointer; user-select:none; color:#05110a; font-weight:800;
-    background:linear-gradient(180deg,var(--accent),var(--accent-2));
-    border-radius:14px; padding:14px 16px; min-width:160px; box-shadow:0 10px 22px rgba(50,205,50,.25);
+  .btn{ appearance:none; border:0; cursor:pointer; user-select:none; color:#07140a; font-weight:900; letter-spacing:.2px;
+    background:linear-gradient(180deg,var(--acc),var(--acc2));
+    border-radius:16px; padding:14px 18px; min-width:170px; box-shadow:0 12px 26px rgba(50,205,50,.22);
     transition:transform .08s ease, filter .2s ease; font-size:16px }
   .btn:active{ transform:translateY(1px) scale(.99) }
-  .btn.alt{ background:var(--card-strong); color:var(--ink); box-shadow:none }
+  .btn.alt{ background:var(--card2); color:var(--ink); box-shadow:none }
   .btn.ghost{ background:transparent; color:var(--muted); box-shadow:none }
   .btn[disabled]{ opacity:.5; pointer-events:none }
 
   .progress{ width:100%; height:14px; background:var(--card); border-radius:12px; overflow:hidden; margin:4px 0 10px }
-  .bar{ height:100%; width:0%; background:linear-gradient(90deg,#34d399,#60a5fa); transition:width .25s ease }
+  .bar{ height:100%; width:0%; background:linear-gradient(90deg,var(--acc),var(--blue)); transition:width .25s ease }
 
   .counter{ text-align:center; color:var(--muted); font-size:14px; margin-bottom:6px }
-  .hero-img{ width:96px; height:96px; margin:6px auto 10px; border-radius:16px; background:#111 center/cover no-repeat; box-shadow:0 6px 16px rgba(0,0,0,.35); animation:pulse 2s ease-in-out infinite }
-  @media (prefers-reduced-motion: reduce){ .hero-img{ animation:none } }
-  @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
 
-  .q{ font-size:clamp(16px,4.3vw,20px); background:var(--card-strong); border-radius:14px; padding:12px; margin-bottom:10px }
-  .answers{ display:grid; gap:10px; margin-bottom:12px }
-  .ans{ display:flex; gap:10px; align-items:center; padding:10px; background:rgba(124,222,123,.08);
-        border:1px solid rgba(124,222,123,.22); border-radius:14px; transition:transform .06s ease, background .2s ease, box-shadow .2s ease }
-  .ans:active{ transform:scale(.99) }
-  .ans:hover{ background:rgba(124,222,123,.12) }
-  .ans.selected{ background:rgba(124,222,123,.2); box-shadow:0 6px 18px rgba(0,0,0,.2) }
-  .ans.disabled{ opacity:.6; pointer-events:none }
-  .ans img{ width:56px; height:56px; border-radius:12px; object-fit:cover; flex:0 0 56px; background:#222 }
+  .hero{ width:100%; height:190px; margin:6px auto 12px; border-radius:18px; background:#111 center/cover no-repeat; box-shadow:0 8px 20px rgba(0,0,0,.28); display:flex; align-items:flex-end; overflow:hidden; transform-style:preserve-3d }
+  .hero .caption{ background:linear-gradient(180deg,transparent,rgba(0,0,0,.6)); color:#fff; width:100%; padding:8px 10px; font-size:14px }
+  .hero.tilt{ transition:transform .12s ease }
+
+  .q{ font-size:clamp(16px,4.3vw,22px); background:var(--card2); border-radius:16px; padding:14px; margin-bottom:10px; position:relative; overflow:hidden }
+  .q::after{ content:""; position:absolute; inset:0; background:radial-gradient(160px 40px at var(--mx,50%) -20px, rgba(125,255,176,.12), transparent 70%); pointer-events:none }
+
+  .answers{ display:grid; gap:12px; margin-bottom:14px }
+  .ans{ display:flex; gap:12px; align-items:center; padding:12px; background:rgba(125,255,176,.08); border:1px solid rgba(125,255,176,.22); border-radius:16px; transition:transform .08s ease, background .25s ease, box-shadow .25s ease, filter .25s ease; position:relative; overflow:hidden }
+  .ans:hover{ background:rgba(125,255,176,.12) }
+  .ans.selected{ background:rgba(125,255,176,.2); box-shadow:0 8px 22px rgba(0,0,0,.22) }
+  .ans.disabled{ opacity:.62; pointer-events:none; filter:saturate(.7) }
+  .ans img{ width:64px; height:64px; border-radius:14px; object-fit:cover; flex:0 0 64px; background:#222 }
   .ans label{ cursor:pointer; display:block; font-size:clamp(14px,3.8vw,16px) }
   .ans input{ accent-color:#34d399; transform:scale(1.15); margin-right:2px }
 
-  .quote{ text-align:center; color:var(--muted); font-style:italic; background:var(--card-strong); border-radius:12px; padding:10px }
+  /* мини‑частицы при выборе */
+  .spark{ position:absolute; width:8px; height:8px; border-radius:50%; background:currentColor; pointer-events:none; mix-blend-mode:screen; filter:blur(.4px); animation:spark .6s ease forwards }
+  @keyframes spark{ to{ transform:translate(var(--dx),var(--dy)) scale(0.2); opacity:0 } }
 
-  .result-title{ text-align:center; font-weight:900; font-size:clamp(20px,5vw,26px); margin:8px 0 6px }
-  .result-desc{ text-align:center; color:var(--muted); font-size:clamp(14px,3.8vw,17px); background:var(--card-strong); border-radius:12px; padding:12px }
-  .frog{ display:none; width:116px; height:116px; margin:12px auto 8px; border-radius:50%; background:url('https://sfile.chatglm.cn/images-ppt/9b652a81470b.jpg') center/cover no-repeat; animation:pulse 1.6s ease-in-out infinite }
+  /* тосты */
+  .toast{ position:fixed; left:50%; top:10px; transform:translateX(-50%); background:var(--bg2); border:1px solid var(--card2); padding:10px 12px; border-radius:14px; color:var(--ink); box-shadow:var(--shadow); display:none; z-index:60; max-width:92%; text-align:center }
 
-  .row.gap{ gap:8px }
-  .switch{ display:inline-flex; align-items:center; gap:8px; color:var(--muted); font-size:14px }
-  .switch input{ width:40px; height:22px; appearance:none; background:var(--card); border-radius:999px; position:relative; outline:none; cursor:pointer }
-  .switch input:before{ content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:left .2s ease }
-  .switch input:checked{ background:#34d399 }
-  .switch input:checked:before{ left:21px }
+  /* результаты */
+  .result-title{ text-align:center; font-weight:900; font-size:clamp(20px,5vw,28px); margin:8px 0 6px }
+  .result-desc{ text-align:center; color:var(--muted); font-size:clamp(14px,3.8vw,17px); background:var(--card2); border-radius:14px; padding:12px }
+  .grid{ display:grid; gap:12px; grid-template-columns:1fr; margin:12px 0 }
+  .card{ background:var(--card2); border:1px solid var(--card); border-radius:16px; padding:12px }
+  .stat{ display:flex; align-items:center; gap:10px }
+  .stat .bar{ height:10px; width:100%; border-radius:999px; background:var(--card); overflow:hidden }
+  .stat .val{ height:100%; width:0%; background:linear-gradient(90deg,var(--amber),var(--rose)); transition:width .5s cubic-bezier(.2,.9,.2,1.1) }
+  .badges{ display:flex; flex-wrap:wrap; gap:8px }
+  .badge{ font-size:12px; padding:6px 8px; border-radius:999px; background:linear-gradient(180deg,#e9d5ff,#f5f3ff); color:#4c1d95; border:1px solid rgba(0,0,0,.06) }
+  .frog{ display:none; width:120px; height:120px; margin:12px auto 8px; border-radius:50%; background:url('https://sfile.chatglm.cn/images-ppt/9b652a81470b.jpg') center/cover no-repeat; animation:pulse 1.8s ease-in-out infinite }
+  @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
 
-  /* Попап */
-  .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:50; backdrop-filter:blur(2px) }
-  .popup{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.94); width:min(520px,92%);
-    background:var(--bg-2); border:1px solid var(--card); border-radius:18px; padding:16px; display:none; z-index:60; box-shadow:var(--shadow); animation:pop .2s ease forwards }
-  @keyframes pop{from{opacity:0; transform:translate(-50%,-46%) scale(.94)} to{opacity:1; transform:translate(-50%,-50%) scale(1)}}
-  .popup img{ width:110px; height:110px; border-radius:50%; object-fit:cover; border:3px solid #34d399; margin-bottom:10px }
-  .popup p{ margin:0 0 10px; color:var(--ink); font-weight:700; text-align:center }
+  /* конфетти */
+  .confetti{ position:fixed; inset:0; pointer-events:none; z-index:80 }
+  .piece{ position:absolute; width:8px; height:14px; background:var(--c); opacity:.9; transform:translate3d(0,0,0); animation:fall var(--t) cubic-bezier(.2,.9,.2,1) forwards }
+  @keyframes fall{ to{ transform:translate3d(var(--x), 110vh, 0) rotate(var(--r)) } }
 
-  :focus-visible{ outline:3px solid #60a5fa; outline-offset:2px; border-radius:10px }
-
-  @media (max-width:480px){ .wrap{ padding:14px } .btn{ padding:13px } .ans img{ width:52px; height:52px } }
+  @media (max-width:560px){ .hero{ height:170px } .wrap{ padding:14px } .ans img{ width:58px; height:58px } .btn{ padding:13px } }
+  @media (prefers-reduced-motion: reduce){ .hero,.ans,.q,.spark,.frog{ animation:none !important } }
 </style>
 </head>
 <body>
   <div class="wrap" role="application" aria-live="polite">
-    <i class="blob" aria-hidden="true"></i><i class="blob2" aria-hidden="true"></i>
+    <i class="blob" aria-hidden="true"></i><i class="blob2" aria-hidden="true"></i><i class="blob3" aria-hidden="true"></i>
 
     <!-- Старт -->
     <section class="screen" id="start">
-      <h1>А ты точно не Алексей?</h1>
-      <p class="lead">Next‑Gen мобильная версия: крупные тапы, оффлайн‑безопасные картинки, сохранение прогресса и чуть‑чуть магии. Готов?</p>
-      <div class="row gap" style="justify-content:space-between">
-        <label class="switch" title="Жёсткие комментарии Алексея">
-          <input type="checkbox" id="modeSpicy">
-          <span>Жёсткие комменты</span>
-        </label>
-        <label class="switch" title="Звук (тихий щелчок)">
-          <input type="checkbox" id="modeSound">
-          <span>Звук</span>
-        </label>
-        <label class="switch" title="Экономия анимаций">
-          <input type="checkbox" id="modeReduce">
-          <span>Меньше анимаций</span>
-        </label>
-      </div>
+      <h1>Next Gen 1.2 — Ты точно не Алексей?</h1>
+      <p class="lead">Гигантский апдейт: мем‑картинки, новые шутки, плавные анимации, без звуков и вибраций. Мобилка — как дома, iOS и Android — уважаем.</p>
       <div class="row">
-        <button class="btn" id="startBtn">Начать</button>
-        <button class="btn alt" id="continueBtn" hidden>Продолжить</button>
+        <button class="btn" id="startBtn">Старт</button>
       </div>
     </section>
 
@@ -144,10 +120,10 @@
     <section class="screen" id="quiz" hidden>
       <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
       <div class="counter" id="counter"></div>
-      <div class="hero-img" id="hero"></div>
+      <figure class="hero tilt" id="hero"><figcaption class="caption" id="heroCap"></figcaption></figure>
       <div class="q" id="q" role="heading" aria-level="2"></div>
       <div class="answers" id="answers" role="radiogroup" aria-label="Варианты ответа"></div>
-      <p class="quote" id="quote"></p>
+      <div class="meta" id="meta"></div>
       <div class="row">
         <button class="btn alt" id="nextBtn" disabled>Далее</button>
         <button class="btn ghost" id="backBtn">Назад</button>
@@ -158,432 +134,298 @@
     <section class="screen" id="result" hidden>
       <h2 class="result-title" id="resTitle"></h2>
       <p class="result-desc" id="resDesc"></p>
-      <div class="frog" id="frog"></div>
+      <div class="grid">
+        <div class="card">
+          <h3 style="margin:0 0 8px">Твои шкалы</h3>
+          <div class="stat"><span style="min-width:120px">Зависть к железу</span><div class="bar"><div class="val" id="sEnvy"></div></div></div>
+          <div class="stat"><span style="min-width:120px">Кредитная импульсивность</span><div class="bar"><div class="val" id="sDebt"></div></div></div>
+          <div class="stat"><span style="min-width:120px">Туалетная философия</span><div class="bar"><div class="val" id="sCope"></div></div></div>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">Ачивки</h3>
+          <div class="badges" id="badges"></div>
+        </div>
+      </div>
+      <div class="frog" id="frog" title="Секретная жаба"></div>
       <div class="row">
-        <button class="btn" id="shareBtn">Поделиться результатом</button>
-        <button class="btn alt" id="restartBtn">Пройти заново</button>
+        <button class="btn" id="shareBtn">Поделиться</button>
+        <button class="btn alt" id="restartBtn">Ещё раз</button>
       </div>
     </section>
   </div>
 
-  <!-- Попап Алексея -->
-  <div class="overlay" id="overlay"></div>
-  <div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="pTitle">
-    <img src="https://sfile.chatglm.cn/images-ppt/3b5aac98c5b3.jpg" alt="Алексей">
-    <p id="pTitle"></p>
-    <button class="btn" id="closePopup">Понятно</button>
-  </div>
+  <div class="toast" id="toast"></div>
+  <canvas class="confetti" id="confetti" hidden></canvas>
 
 <script>
-/**** ДАННЫЕ ****/
-const questions = [
-  {
-    question: "Ты купил SSD на 2 ТБ. Что скажешь?",
-    answers: [
-      { text: "С заделом на будущее", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "В кредит, как нормальные люди", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-      { text: "Шо це таке?", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Поставлю, если место найду", points: 1, image: "https://sfile.chatglm.cn/images-ppt/b7e9a44144e4.jpg" },
-      { text: "Это не то, что я ждал от S.T.A.L.K.E.R. 2", points: 1, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-    quote: "Лучший апгрейд — это тот, который потом не стыдно показывать."
-  },
-  {
-    question: "Как ты реагируешь, если друг купил себе колбасу и не поделился?",
-    answers: [
-      { text: "Смотрю с осуждением", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-      { text: "Съедаю его носки", points: 0, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-      { text: "Говорю: \"Нахуй с пляжа\"", points: 2, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" },
-      { text: "Завидую молча, но ночью пишу пассивно-агрессивные сообщения", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-      { text: "Иду в туалет на 2 часа обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/e573713e143a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/1fe0411bb968.jpg",
-    quote: "Колбаса делится, карма — нет."
-  },
-  {
-    question: "Ты видишь свою девушку в кустах с другим парнем. Что ты делаешь?",
-    answers: [
-      { text: "Устраиваю скандал", points: 1, image: "https://sfile.chatglm.cn/images-ppt/2ff009ac6ce5.jpg" },
-      { text: "Кричу: \"Всё ясно, я не дурак\"", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-      { text: "Разворачиваюсь и сижу потом 2 часа в туалете", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Делаю селфи и сторис \"лучше без неё\"", points: 0, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-      { text: "Покупаю новый проц в кредит, чтобы забыть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg",
-    quote: "Туалет — топ‑спот для философии."
-  },
-  {
-    question: "Какой у тебя идеальный выходной?",
-    answers: [
-      { text: "Пройти Assassin's Creed в 10-й раз", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-      { text: "Вырвать траву в поле", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Пойти в кредит за новым процом", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Сидеть в туалете и обдумывать жизнь", points: 1, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-      { text: "Ждать S.T.A.L.K.E.R. 2", points: 2, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-    quote: "Выходной — это когда прошёл Ассасина и вырвал траву."
-  },
-  {
-    question: "Что ты скажешь, когда увидишь, что у друга новый компьютер?",
-    answers: [
-      { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-      { text: "Нахуй с пляжа", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e573713e143a.jpg" },
-      { text: "Та хай…", points: 0, image: "https://sfile.chatglm.cn/images-ppt/b7e9a44144e4.jpg" },
-      { text: "Я бы тоже купил, но у меня девушка", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-      { text: "Мой старый проц тоже когда-то был новым", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-    quote: "Зависть к чужому железу — обычна, но тихо."
-  },
-  {
-    question: "Как ты относишься к своим носкам?",
-    answers: [
-      { text: "Хожу в дырявых, но с \"заделом на будущее\"", points: 2, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-      { text: "Всегда покупаю новые, в кредит", points: 1, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" },
-      { text: "Ношу до последней дырки", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-      { text: "Не ношу носки, это не по-сельски", points: 0, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-      { text: "Думаю о новом компе, когда надеваю носки", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png",
-    quote: "Дырявый носок — как старый проц: работает, но грустно."
-  },
-  {
-    question: "Что для тебя S.T.A.L.K.E.R. 2?",
-    answers: [
-      { text: "Мечта всей жизни", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg" },
-      { text: "Подожду, пока куплю новый проц", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-      { text: "Уже прошёл на старом компьютере", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Шо це таке?", points: 0, image: "https://sfile.chatglm.cn/images-ppt/b7e9a44144e4.jpg" },
-      { text: "Лучше, чем новая девушка", points: 2, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg",
-    quote: "S.T.A.L.K.E.R. 2 — как новый проц: мечтаешь и копишь."
-  },
-  {
-    question: "Как ты проводишь время в поле?",
-    answers: [
-      { text: "Вырываю траву и думаю о новом железе", points: 2, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-      { text: "Играю на ноутбуке, если зарядил", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-      { text: "Сижу в туалете и обдумываю жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Думаю о девушке в кустах", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-      { text: "Считаю, сколько денег нужно на новый проц", points: 2, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg",
-    quote: "Поле — место, где планы апгрейда растут быстрее травы."
-  },
-  {
-    question: "Что ты делаешь, когда у тебя нет денег?",
-    answers: [
-      { text: "Беру в кредит", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Прошу у девушки", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-      { text: "Сижу в туалете и плачу", points: 1, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Завидую чужому апгрейду", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-      { text: "Вырываю траву и зарабатываю", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-    quote: "Нет денег? Зато есть фантазия и кредитный лимит."
-  },
-  {
-    question: "Как ты относишься к Assassin's Creed?",
-    answers: [
-      { text: "Прошёл все 10 раз", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-      { text: "Люблю больше, чем девушку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" },
-      { text: "Играю, когда девушка в кустах", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-      { text: "Жду новую часть лучше S.T.A.L.K.E.R. 2", points: 1, image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg" },
-      { text: "Проходил бы на новом железе", points: 2, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-    quote: "Кредо ассасина: апгрейд — прежде всего."
-  },
-  {
-    question: "Что ты делаешь, когда видишь новый видеокурс по апгрейду ПК?",
-    answers: [
-      { text: "Сразу беру в кредит и покупаю", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Смотрю бесплатно на ютубе", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-      { text: "Иду в туалет обдумывать покупку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Прошу у девушки денег", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-      { text: "Завидую тем, кто может себе позволить", points: 1, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-    quote: "Видеокурс — это как новый BIOS: страшно, но надо."
-  },
-  {
-    question: "Как ты относишься к RGB‑подсветке в ПК?",
-    answers: [
-      { text: "Обязательно нужно, даже если проц старый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-      { text: "Бесполезная трата денег", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Куплю, когда возьму в кредит", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-      { text: "Лучше купить новый проц", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-      { text: "Завидую тем, у кого есть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-    quote: "RGB — стиль жизни. Но блок питания важнее."
-  },
-  {
-    question: "Что ты делаешь, когда у друга новый телефон?",
-    answers: [
-      { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-      { text: "Говорю, что мой старый тоже хороший", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Иду в туалет обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Беру в кредит и покупаю новый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Прошу у девушки купить мне", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-    quote: "Новый телефон — как новый проц, только в кармане."
-  },
-  {
-    question: "Как ты проводишь выходные, когда ждёшь зарплату?",
-    answers: [
-      { text: "Играю в старые игры на ПК", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Вырываю траву в поле", points: 1, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-      { text: "Сижу в туалете и плачу", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Беру в кредит до зарплаты", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Завидую тем, у кого есть деньги", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg",
-    quote: "Зарплата — DLC к жизни. Ждать всегда больно."
-  },
-  {
-    question: "Что ты делаешь, когда видишь рекламу нового железа?",
-    answers: [
-      { text: "Сразу хочу купить", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Иду в туалет обдумывать покупку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Завидую тем, кто может себе позволить", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-      { text: "Говорю, что моё железо тоже хорошее", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Ищу, как взять это в кредит", points: 2, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-    quote: "Реклама — как босс: всегда пытается тебя добить."
-  },
-  {
-    question: "Как ты относишься к облачным сервисам?",
-    answers: [
-      { text: "Это для богатых", points: 1, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-      { text: "Лучше купить жёсткий диск", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-      { text: "Беру в кредит подписку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Ищу бесплатные альтернативы", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-      { text: "Завидую тем, кто может себе позволить", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png",
-    quote: "Облако — это хорошо, если не грозит дождём платежей."
-  },
-  {
-    question: "Что ты делаешь, когда у друга новая видеокарта?",
-    answers: [
-      { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-      { text: "Говорю, что моя старая тоже норм", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Иду в туалет обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Беру в кредит и покупаю новую", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Прошу у девушки купить мне", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-    quote: "Новая видяха — новый смысл жизни на пару недель."
-  },
-  {
-    question: "Как ты проводишь время, когда ждёшь S.T.A.L.K.E.R. 2?",
-    answers: [
-      { text: "Прохожу Assassin's Creed в 10-й раз", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-      { text: "Вырываю траву в поле", points: 1, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-      { text: "Сижу в туалете и плачу", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Беру в кредит и покупаю новый проц", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Завидую тем, кто уже может играть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg",
-    quote: "Ожидание — мини‑игра с болью и мемами."
-  },
-  {
-    question: "Что ты делаешь, когда видишь, что у друга новый монитор?",
-    answers: [
-      { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-      { text: "Говорю, что мой старый тоже хороший", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Иду в туалет обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-      { text: "Беру в кредит и покупаю новый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-      { text: "Прошу у девушки купить мне", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-    quote: "Новый монитор — новые глаза. И новая зависть."
-  },
-  {
-    question: "Как ты относишься к игровым креслам?",
-    answers: [
-      { text: "Нужно, даже если проц старый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-      { text: "Бесполезная трата денег", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-      { text: "Куплю, когда возьму в кредит", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-      { text: "Лучше купить новый проц", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-      { text: "Завидую тем, у кого есть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-    ],
-    image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-    quote: "Трон геймера — это не стул, это образ жизни."
-  }
+/* ===== Next Gen 1.2 — огромный патч =====
+   — Новые шутки/ответы в стиле интернет‑юмора, но дружелюбно.
+   — Мем‑картинки в заголовках и ответах, предзагрузка.
+   — Усиленные анимации: 3D‑tilt для хедера, частицы при таче, конфетти на финише.
+   — Без звуков и вибраций. Приспособлено к iOS/Android.
+*/
+
+/* Мем‑пул (можно заменить на свои пути) */
+const MEMES = [
+  'https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg',
+  'https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg',
+  'https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg',
+  'https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png',
+  'https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg',
+  'https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg',
+  'https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg',
+  'https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg',
+  'https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg',
+  'https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg',
+];
+const pickMeme = ()=> MEMES[Math.floor(Math.random()*MEMES.length)];
+const preload = (url)=>{ const img=new Image(); img.decoding='async'; img.loading='lazy'; img.src=url };
+
+/* Вопросы/ответы (новые формулировки — лёгкая ирония, интернет‑вайб) */
+const Q = [
+  { q:'SSD на 2 ТБ — берёшь?', cap:'«Steam: 999+ обновлений. Ты: дай два терабайта»', a:[
+      {t:'Беру. Хочу жить без Тетриса с файлами', v:{e:1,d:0,c:0}},
+      {t:'Жду скидки, как патча первого дня', v:{e:0,d:0,c:1}},
+      {t:'В рассрочку? Да, как взрослый ребёнок', v:{e:1,d:2,c:0}},
+      {t:'Оставлю HDD как музей боли', v:{e:0,d:0,c:2}},
+  ]},
+  { q:'Друг собрал ПК мечты. Реакция?', cap:'«Он — ультра. Ты — интервент на средних»', a:[
+      {t:'Ставлю лайк, плачу внутри, шучу снаружи', v:{e:1,d:1,c:1}},
+      {t:'“Та хай…”. Апгрейжу носки и самооценку', v:{e:0,d:0,c:1}},
+      {t:'Собираю корзину на вдохе, на выдохе — кредит', v:{e:2,d:2,c:0}},
+      {t:'Иду тестить у него — отпускает через 30 FPS', v:{e:0,d:0,c:0}},
+  ]},
+  { q:'Отношения дали синюю экрану. Дальше?', cap:'«CTRL+ALT+Уважение к себе»', a:[
+      {t:'Выхожу из квеста без скандала', v:{e:0,d:0,c:2}},
+      {t:'Скоро буду: спидран одиночества с играми', v:{e:1,d:0,c:2}},
+      {t:'Retail‑терапия: видяха лечит всё (нет)', v:{e:1,d:2,c:0}},
+      {t:'Зал/книжка/друзья — патч к жизни', v:{e:0,d:0,c:1}},
+  ]},
+  { q:'Выходной мечты?', cap:'«IRL и URL в балансе»', a:[
+      {t:'Ассасин + готовлю что‑то съедобное', v:{e:0,d:0,c:1}},
+      {t:'6 часов сравниваю цены и страдаю красиво', v:{e:2,d:1,c:0}},
+      {t:'Улица/спорт/друзья, вечером рейд', v:{e:0,d:0,c:0}},
+      {t:'Сортир‑философ, мысли как RTX ON', v:{e:0,d:0,c:2}},
+  ]},
+  { q:'Носки в дырках. Что по плану?', cap:'«Апгрейд начинается с перефирии»', a:[
+      {t:'Шью — минус стыд, плюс бюджет', v:{e:0,d:0,c:1}},
+      {t:'Пачка новых с RGB настроением', v:{e:1,d:1,c:0}},
+      {t:'Кроссы спасут — вижу, не слышу', v:{e:0,d:0,c:0}},
+      {t:'Вторая жизнь: уборка системника', v:{e:0,d:0,c:2}},
+  ]},
+  { q:'S.T.A.L.K.E.R. 2 на горизонте', cap:'«Выброс эмоций: готовность 100%»', a:[
+      {t:'Предзаказ как обет: верю и жду', v:{e:1,d:1,c:0}},
+      {t:'Подожду пару патчей, я не спринтер', v:{e:0,d:0,c:1}},
+      {t:'Собираю ультра‑риг, даже если у меня кухня', v:{e:2,d:2,c:0}},
+      {t:'Перепрохожу классику, кайф стабилен', v:{e:0,d:0,c:1}},
+  ]},
+  { q:'Деньги закончились до апгрейда', cap:'«Баланс со счётом дружит лучше, чем RGB»', a:[
+      {t:'Б/у рынок + продаю старое — чистый профит', v:{e:0,d:0,c:1}},
+      {t:'Кредитка — мой финальный босс', v:{e:1,d:2,c:0}},
+      {t:'План Б, пауза лучше минуса', v:{e:0,d:0,c:2}},
+      {t:'Подработка‑квест ради мечты', v:{e:0,d:0,c:0}},
+  ]},
+  { q:'Курс «+100 FPS за день»', cap:'«Если звучит как магия — проверь договор»', a:[
+      {t:'Ютуб/форумы/доки — сначала база', v:{e:0,d:0,c:1}},
+      {t:'Покупаю на эмоциях, потом читаю отзывы', v:{e:1,d:2,c:0}},
+      {t:'В закладки, вернусь трезво', v:{e:0,d:0,c:2}},
+      {t:'Спрошу у своих, сравню по фактам', v:{e:0,d:0,c:0}},
+  ]},
+  { q:'Друг с новым телефоном', cap:'«Он снимает Луну, ты — реальность»', a:[
+      {t:'Рад за него. У меня и так всё летит', v:{e:0,d:0,c:0}},
+      {t:'Смотрю обзоры, считаю смысл апгрейда', v:{e:1,d:0,c:1}},
+      {t:'Рассрочка? Алло, банк', v:{e:1,d:2,c:0}},
+      {t:'Поменял батарею — и телефон ожил', v:{e:0,d:0,c:2}},
+  ]},
+  { q:'До зарплаты две недели', cap:'«Бэклог зовёт, кошелёк благодарит»', a:[
+      {t:'Инди‑алмазы + чай из кружки счастья', v:{e:0,d:0,c:1}},
+      {t:'Мониторю цены до рассвета, грущу красиво', v:{e:2,d:1,c:0}},
+      {t:'Оффлайн‑выходные: парк, люди, солнце', v:{e:0,d:0,c:2}},
+      {t:'Стримлю друзьям. Весело и бесплатно', v:{e:0,d:0,c:0}},
+  ]},
+  { q:'Ассасины vs. режим дня', cap:'«Сейв‑лоад IRL обязателен»', a:[
+      {t:'1‑2 миссии и спать по таймеру', v:{e:0,d:0,c:1}},
+      {t:'Марафон до утра. Ноль сожалений', v:{e:0,d:0,c:0}},
+      {t:'DLC по эмоциям — беру мгновенно', v:{e:0,d:2,c:0}},
+      {t:'Таймер‑лимит и воды стакан', v:{e:0,d:0,c:2}},
+  ]},
+  { q:'RGB‑подсветка', cap:'«Свет без смысла — просто свет»', a:[
+      {t:'Сначала БП/охлаждение, потом радуга', v:{e:0,d:0,c:1}},
+      {t:'RGB везде. Я — новогодняя ёлка', v:{e:1,d:1,c:0}},
+      {t:'Если красиво и дёшево — why not', v:{e:0,d:0,c:0}},
+      {t:'Мне бы FPS, а не глянец', v:{e:0,d:0,c:2}},
+  ]},
+  { q:'Новый монитор у друга', cap:'«Дюймы — не всё. Важна картинка и мозги»', a:[
+      {t:'Схожу глянуть IRL, сравню матрицы', v:{e:0,d:0,c:0}},
+      {t:'Сразу 32″ в корзину. Не торможу', v:{e:1,d:2,c:0}},
+      {t:'Добавляю в цели. Спокойно коплю', v:{e:1,d:0,c:1}},
+      {t:'Тюню свой: гамма/яркость/профили', v:{e:0,d:0,c:2}},
+  ]},
+  { q:'Игровое кресло', cap:'«Основа — спина. Остальное — скин»', a:[
+      {t:'Апгрейжу рабочее место целиком', v:{e:0,d:0,c:2}},
+      {t:'Беру хорошее на скидке', v:{e:0,d:0,c:1}},
+      {t:'Фулл прайс и рассрочка — мой путь', v:{e:0,d:2,c:0}},
+      {t:'Пока стул + перерывы по уму', v:{e:0,d:0,c:0}},
+  ]},
 ];
 
-const results = [
-  { minScore: 0,  maxScore: 15, title: "🧘‍♂️ Ты — нормальный человек", description: "У тебя всё в порядке: и носки, и чувства, и ПК. Алексей бы завидовал, но сказал бы: ‘та хай…’" },
-  { minScore: 16, maxScore: 25, title: "💾 Ты — начинающий Алексей", description: "Начало пути апгрейда. Завидуешь железу, но держишься. Потенциал есть!" },
-  { minScore: 26, maxScore: 35, title: "🔧 Ты — полуАлексей", description: "Баланс между здравым смыслом и проклятием апгрейда. Почти брат." },
-  { minScore: 36, maxScore: 45, title: "💻 Ты — почти Алексей", description: "На пороге гениальности апгрейда. Иногда даже сдерживаешься." },
-  { minScore: 46, maxScore: 60, title: "🧦 Ты — 100% Алексей", description: "Живёшь апгрейдами и страданием. Плачешь в туалете — но без свидетелей. Сельский киберпанк." }
+/* Ранги и тосты */
+const RANKS = [
+  {id:'calm', title:'🧊 Хладнокровный апгрейдер', desc:'Смотришь на железо трезво, деньги — под контролем, жизнь — не только FPS.'},
+  {id:'hybrid', title:'⚖️ Балансировщик', desc:'Между “хочу” и “надо” ты торгуешься с талантом. Кредит реже, голова чаще.'},
+  {id:'a_like', title:'💻 Почти Алексей', desc:'Глаза горят, корзина тоже. План + дисциплина — и будет топ.'},
+  {id:'full_a', title:'🧦 100% Алексей', desc:'Живёшь апгрейдом. Добавь режима — и жизнь станет ровнее.'}
+];
+const TOASTS = [
+  'Лучший апгрейд — тот, что решает боль.',
+  'RGB без БП — как тюнинг без мотора.',
+  'Скидка — не причина, а проверка нервов.',
+  'Жадный до FPS? Проверь охлаждение.',
+  'Иногда “подождать” — это навык S‑ранга.',
+  'Б/у рынок — тёмный лес с золотом.',
+  'Сохраняйся и в реальности.'
 ];
 
-const commentsMild = [
-  "Такой ответ — минус карма и плюс кредитный лимит.",
-  "Мой старый проц и то умнее. Поднажми.",
-  "С таким темпом ты перейдёшь на HDD не по своей воле.",
-  "Два часа в туалете — и всё равно лучше, чем этот вариант.",
-  "Нахуй с пляжа — но сначала перечитай вопрос.",
-  "Если бы зависть была валютой, ты был бы олигарх.",
-  "Этот ответ как RGB без блока питания — блестит, но бесполезно.",
-  "Я бы лучше носки заштопал, чем так отвечал.",
-  "S.T.A.L.K.E.R. ещё не вышел, а твой ответ уже устарел.",
-  "Выбор слабый. Давай без ‘та хай…’, соберись."
-];
-
-const commentsSpicy = [
-  "Ответ слабее Wi‑Fi через три стены. Вернись и подумай.",
-  "Даже мой калькулятор страдает от такого варианта.",
-  "Это боль. Прям как цена на видеокарты.",
-  "Такое ощущение, что ты выбирал носом. Попробуй мозгом.",
-  "Пока ты думал, у друга уже апгрейд. Догоняй!",
-  "Этот выбор — как RGB в тостере. Красиво, но зачем?",
-  "Мощно. В плохом смысле. Перебери ещё раз.",
-  "Проц греется не от нагрузки, а от стыда за такой ответ.",
-  "Соберись — иначе тебя скоро обгонит черепаха на HDD.",
-  "Слабовато. Но шанс на redemption arc есть."
-];
-
-/**** СОСТОЯНИЕ ****/
-let idx = 0, score = 0; // номер вопроса, счёт
-let lastPick = null, streakSame = 0; // пасхалка
-let locked = false; // защита от дабл‑тапов
-let spicy = false, soundOn = false, reduceMotion = false; // режимы
-
-/**** ЭЛЕМЕНТЫ ****/
+/* Состояние/элементы */
+let i=0; let envy=0, debt=0, cope=0; let picked=null; let streakSame=0; let selIndex=[]; let lastIdx=null;
 const $ = s => document.querySelector(s);
-const start = $('#start');
-const quiz  = $('#quiz');
-const result= $('#result');
-const startBtn = $('#startBtn');
-const contBtn  = $('#continueBtn');
-const nextBtn  = $('#nextBtn');
-const backBtn  = $('#backBtn');
-const restartBtn = $('#restartBtn');
-const shareBtn = $('#shareBtn');
-const hero = $('#hero');
-const bar  = $('#bar');
-const counter = $('#counter');
-const qEl = $('#q');
-const answers = $('#answers');
-const quote = $('#quote');
-const frog  = $('#frog');
-const overlay = $('#overlay');
-const popup = $('#popup');
-const pTitle = $('#pTitle');
-const closePopup = $('#closePopup');
-const modeSpicy = $('#modeSpicy');
-const modeSound = $('#modeSound');
-const modeReduce= $('#modeReduce');
+const start = $('#start'); const quiz = $('#quiz'); const result = $('#result');
+const bar = $('#bar'); const counter = $('#counter'); const hero = $('#hero'); const heroCap = $('#heroCap');
+const qEl = $('#q'); const answers = $('#answers'); const meta = $('#meta');
+const nextBtn = $('#nextBtn'); const backBtn = $('#backBtn'); const startBtn = $('#startBtn'); const restartBtn = $('#restartBtn');
+const resTitle = $('#resTitle'); const resDesc = $('#resDesc'); const sEnvy = $('#sEnvy'); const sDebt = $('#sDebt'); const sCope = $('#sCope');
+const badges = $('#badges'); const frog = $('#frog'); const toast = $('#toast'); const shareBtn = $('#shareBtn');
+const confetti = $('#confetti'); const ctx = confetti.getContext('2d');
 
-/**** UX МЕЛОЧИ ****/
-const clickSnd = new Audio();
-clickSnd.src = 'data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQAA'; // тихий пустой звук‑заглушка
-function vib(ms=12){ if(navigator.vibrate) navigator.vibrate(ms) }
-function show(el){ el.hidden=false }
-function hide(el){ el.hidden=true }
-function save(){ localStorage.setItem('quiz_v1', JSON.stringify({idx,score,lastPick,streakSame,spicy,soundOn,reduceMotion})) }
-function load(){ try{ return JSON.parse(localStorage.getItem('quiz_v1')||'null') }catch{ return null } }
-function resetSave(){ localStorage.removeItem('quiz_v1') }
+/* Хэндлеры */
+startBtn.addEventListener('click',()=>{ i=0; envy=0; debt=0; cope=0; streakSame=0; picked=null; selIndex=[]; lastIdx=null; hide(start); show(quiz); render() });
+backBtn.addEventListener('click',()=>{ if(i===0){ hide(quiz); show(start); return } i=Math.max(0,i-1); recompute(); frog.style.display='none'; render() });
+restartBtn.addEventListener('click',()=>{ hide(result); show(start) });
+nextBtn.addEventListener('click',()=>{ i++; if(i<Q.length) render(); else finish() });
 
-/**** СТАРТ ****/
-const saved = load();
-if(saved){ contBtn.hidden = false }
+function recompute(){ envy=debt=cope=0; for(let k=0;k<i;k++){ const sel = selIndex[k]; if(sel!=null){ const v=Q[k].a[sel].v; envy+=v.e; debt+=v.d; cope+=v.c } } }
 
-startBtn.addEventListener('click', () => { startGame(false) });
-contBtn.addEventListener('click', () => { startGame(true) });
-
-function startGame(resume){
-  spicy = modeSpicy.checked;
-  soundOn = modeSound.checked;
-  reduceMotion = modeReduce.checked || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if(resume && saved){ ({idx,score,lastPick,streakSame,spicy,soundOn,reduceMotion} = {...saved}) }
-  else { idx=0; score=0; lastPick=null; streakSame=0 }
-
-  hide(start); show(quiz); render(); save();
-}
-
-/**** РЕНДЕР ****/
+/* Рендер шага */
 function render(){
-  locked=false; nextBtn.disabled=true;
-  const total = questions.length; const q = questions[idx];
-  const progress = ((idx+1)/total)*100; bar.style.width = progress.toFixed(1)+'%';
-  counter.textContent = `Вопрос ${idx+1} из ${total}`;
-  hero.style.backgroundImage = `url("${q.image}")`;
-  qEl.textContent = q.question;
-  quote.textContent = `"${q.quote}"`;
+  nextBtn.disabled = true; picked=null; answers.innerHTML=''; meta.innerHTML='';
+  const total = Q.length; const q = Q[i];
+  const progress = ((i+1)/total)*100; bar.style.width = progress.toFixed(1)+'%';
+  counter.textContent = `Вопрос ${i+1} из ${total}`;
 
-  answers.innerHTML = '';
-  q.answers.forEach((ans,i)=>{
+  // Заголовочный мем + подпись
+  const heroImg = pickMeme(); hero.style.backgroundImage = `url('${heroImg}')`; heroCap.textContent = q.cap || '';
+  qEl.textContent = q.q;
+
+  // подсказки
+  (tipsFor(i)).forEach(t=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=t; meta.appendChild(c) });
+
+  // ответы + картинки, предзагрузка
+  q.a.forEach((ans,idx)=>{
+    const img = pickMeme(); if(idx<2) preload(img);
     const row = document.createElement('div'); row.className='ans';
     row.innerHTML = `
-      <img src="${ans.image}" alt="" loading="lazy" decoding="async">
+      <img src="${img}" alt="мем ПК" loading="lazy" decoding="async">
       <div style="display:flex;align-items:center;gap:8px">
-        <input type="radio" id="a${idx}_${i}" name="q${idx}" value="${i}">
-        <label for="a${idx}_${i}">${ans.text}</label>
+        <input type="radio" id="a${i}_${idx}" name="q${i}" value="${idx}">
+        <label for="a${i}_${idx}">${ans.t}</label>
       </div>`;
-    row.addEventListener('click',()=> pick(i,row,ans.points),{passive:true});
+    row.addEventListener('click',(e)=>pick(idx,row,ans.v,e));
     answers.appendChild(row);
   });
 
-  // свайп «вперёд», если ответ выбран
-  let touchX=null; answers.addEventListener('touchstart',e=>{ touchX=e.touches[0].clientX },{passive:true});
-  answers.addEventListener('touchend',e=>{
-    if(touchX===null) return; const dx = e.changedTouches[0].clientX - touchX; touchX=null; if(Math.abs(dx)>60 && !nextBtn.disabled){ goNext() }
-  },{passive:true});
+  // tilt‑эффект для hero
+  hero.onmousemove = (e)=>{
+    const r = hero.getBoundingClientRect(); const x = (e.clientX - r.left)/r.width - .5; const y = (e.clientY - r.top)/r.height - .5;
+    hero.style.transform = `perspective(700px) rotateY(${x*6}deg) rotateX(${ -y*6}deg)`; qEl.style.setProperty('--mx', `${(x+.5)*100}%`)
+  };
+  hero.onmouseleave = ()=>{ hero.style.transform='perspective(700px) rotateY(0deg) rotateX(0deg)'; };
+
+  // восстановить выбор
+  if(selIndex[i]!=null){ const el = answers.children[selIndex[i]]; if(el){ el.classList.add('selected'); [...answers.children].forEach((x,k)=>k!==selIndex[i]&&x.classList.add('disabled')); nextBtn.disabled=false } }
 }
 
-/**** ВЫБОР ОТВЕТА ****/
-function pick(i,row,pts){ if(locked) return; locked=true; vib(8); if(soundOn) try{ clickSnd.currentTime=0; clickSnd.play() }catch{}
-  [...answers.children].forEach((el,k)=>{ if(k===i) el.classList.add('selected'); else el.classList.add('disabled') });
-
+/* Клик по ответу: частицы + логика */
+function pick(idx,row,v,evt){ if(picked!=null) return; picked=idx; selIndex[i]=idx;
+  [...answers.children].forEach((el,k)=>{ if(k===idx) el.classList.add('selected'); else el.classList.add('disabled') });
   // пасхалка
-  if(lastPick===i){ streakSame++; if(streakSame>=2) frog.style.display='block' } else { streakSame=0; frog.style.display='none' }
-  lastPick = i; score += pts; nextBtn.disabled=false; save();
-
-  // коммент «Алексея»
-  const pool = spicy ? commentsSpicy : commentsMild;
-  const line = pool[Math.floor(Math.random()*pool.length)];
-  setTimeout(()=> showPopup(line), 140);
+  if(lastIdx===idx){ streakSame++; if(streakSame>=2) frog.style.display='block' } else { streakSame=0; frog.style.display='none' }
+  lastIdx = idx;
+  // очки
+  envy += v.e; debt += v.d; cope += v.c; nextBtn.disabled=false;
+  // частицы
+  burst(row, evt?.clientX, evt?.clientY);
+  toastMsg(randomPick(TOASTS), 1400);
 }
 
-/**** ПОПАП ****/
-function showPopup(text){ pTitle.textContent=text; overlay.style.display='block'; popup.style.display='block' }
-function hidePopup(){ overlay.style.display='none'; popup.style.display='none' }
-overlay.addEventListener('click', hidePopup); closePopup.addEventListener('click', hidePopup);
+/* Финиш: ранги, ачивки, конфетти */
+function finish(){ hide(quiz); show(result);
+  const max = 2*Q.length; const pe = Math.round((envy/max)*100); const pd = Math.round((debt/max)*100); const pc = Math.round((cope/max)*100);
+  sEnvy.style.width = pe+'%'; sDebt.style.width = pd+'%'; sCope.style.width = pc+'%';
+  const score = pe*0.4 + pd*0.4 + pc*0.2; let rank = RANKS[0];
+  if(score>35 && score<=55) rank=RANKS[1]; else if(score>55 && score<=75) rank=RANKS[2]; else if(score>75) rank=RANKS[3];
+  resTitle.textContent = rank.title; resDesc.textContent = rank.desc;
+  badges.innerHTML=''; if(pe>=70) addBadge('Железный завистник'); if(pd>=60) addBadge('Импульс кредитки'); if(pc>=60) addBadge('Мыслитель санузла'); if(pe<=25 && pd<=25) addBadge('Стальной характер'); if(score>=80) addBadge('Алексей Supreme');
+  confettiShow();
+}
 
-/**** НАВИГАЦИЯ ****/
-nextBtn.addEventListener('click', ()=> goNext());
-function goNext(){ hidePopup(); idx++; if(idx<questions.length){ render(); } else { finish() } save() }
-backBtn.addEventListener('click', ()=>{ if(idx===0) { hide(quiz); show(start); return } idx=Math.max(0,idx-1); score=Math.max(0,score-1); // лёгкий штраф за откат
-  frog.style.display='none'; lastPick=null; render(); save(); });
+/* Сервисные */
+function addBadge(text){ const b=document.createElement('span'); b.className='badge'; b.textContent=text; badges.appendChild(b) }
+function randomPick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+function toastMsg(text,ms=1200){ toast.textContent=text; toast.style.display='block'; clearTimeout(toast._t); toast._t=setTimeout(()=>toast.style.display='none', ms) }
+function show(el){ el.hidden=false } function hide(el){ el.hidden=true }
+function tipsFor(i){
+  const map = {
+    0:['Не все терабайты одинаково полезны.'],
+    1:['Честность — это зависть молча.'],
+    2:['Иногда лучший апгрейд — уйти в офлайн.'],
+    3:['Играешь и живёшь — оба апгрейда важны.'],
+    4:['Большие апгрейды начинаются с мелочей.'],
+    5:['Грядёт выброс — держи шапку.'],
+    6:['Есть путь без минусов по счёту.'],
+    7:['“+100 FPS за день” — проверь мелкий шрифт.'],
+    8:['Телефон — инструмент, не статус.'],
+    9:['Backlog игр — бесплатное золото.'],
+    10:['Сохраняйся и в реальности.'],
+    11:['Свет — хорошо, смысл — лучше.'],
+    12:['Дюймы — не всё. Важна матрица.'],
+    13:['Спина важнее подушки.']
+  }; return map[i]||[];
+}
 
-/**** ФИНИШ ****/
-function finish(){ hide(quiz); show(result); const r = results.find(r=> score>=r.minScore && score<=r.maxScore) || results[0];
-  $('#resTitle').textContent = r.title; $('#resDesc').textContent = r.description; window.scrollTo({top:0,behavior:'smooth'}); save(); }
+/* Частицы при выборе */
+function burst(node, cx, cy){
+  const rect = node.getBoundingClientRect();
+  const x = (cx||rect.left+rect.width/2) - rect.left; const y = (cy||rect.top+rect.height/2) - rect.top;
+  for(let k=0;k<14;k++){
+    const s = document.createElement('i'); s.className='spark'; s.style.left = x+'px'; s.style.top = y+'px';
+    const a = Math.random()*Math.PI*2; const d = 60 + Math.random()*60;
+    s.style.setProperty('--dx', Math.cos(a)*d + 'px'); s.style.setProperty('--dy', Math.sin(a)*d + 'px');
+    s.style.color = ['#7dffb0','#60a5fa','#b794f4','#fbbf24','#fb7185'][k%5]; node.appendChild(s);
+    setTimeout(()=> s.remove(), 700);
+  }
+}
 
-restartBtn.addEventListener('click', ()=>{ frog.style.display='none'; resetSave(); hide(result); show(start) });
+/* Конфетти холст */
+function confettiShow(){ confetti.width = innerWidth; confetti.height = innerHeight; confetti.hidden=false; ctx.clearRect(0,0,confetti.width,confetti.height);
+  const pieces=[]; const colors=['#7dffb0','#60a5fa','#b794f4','#fbbf24','#fb7185'];
+  for(let k=0;k<110;k++){
+    pieces.push({x: Math.random()*confetti.width, y: -10-Math.random()*200, vy: 2+Math.random()*4, vx: -1+Math.random()*2, w:6+Math.random()*6, h:10+Math.random()*10, c: colors[k%colors.length], r: Math.random()*6});
+  }
+  let t=0; const tick=()=>{ ctx.clearRect(0,0,confetti.width,confetti.height); t+=1/60;
+    for(const p of pieces){ p.x+=p.vx; p.y+=p.vy; p.r+=0.06; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore(); }
+    if(t<2.2) requestAnimationFrame(tick); else confetti.hidden=true; };
+  requestAnimationFrame(tick);
+}
 
-/**** SHARE ****/
+/* Шеринг результата */
 shareBtn.addEventListener('click', async ()=>{
-  const t = $('#resTitle').textContent; const d = $('#resDesc').textContent; const url = location.href;
-  if(navigator.share){ try{ await navigator.share({ title: t, text: `${t}\n${d}`, url }); }catch(e){} }
-  else{ await navigator.clipboard.writeText(`${t}\n${d}\n${url}`); alert('Скопировано в буфер обмена') }
+  const t = resTitle.textContent; const d = resDesc.textContent; const url = location.href;
+  if(navigator.share){ try{ await navigator.share({ title:t, text:`${t}
+${d}`, url }) }catch(e){} }
+  else{ try{ await navigator.clipboard.writeText(`${t}
+${d}
+${url}`); toastMsg('Скопировано в буфер') }catch(e){ alert('Скопируй вручную: '+t+' — '+d) } }
 });
-
-/**** REDUCED MOTION ****/
-modeReduce.checked = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-modeReduce.addEventListener('change',()=>{ document.documentElement.classList.toggle('reduce', modeReduce.checked) })
 </script>
 </body>
 </html>
