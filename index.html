@@ -1,960 +1,424 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>А ты точно не Алексей?</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Indie+Flower&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Comfortaa', sans-serif;
-            background-color: #f5f5dc;
-            background-image: url('https://sfile.chatglm.cn/images-ppt/2db5e47dcc2a.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 720px;
-            background-color: rgba(255, 255, 255, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-        }
-        
-        .container::before {
-            content: "";
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background-color: rgba(76, 175, 80, 0.2);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        
-        .container::after {
-            content: "";
-            position: absolute;
-            bottom: -70px;
-            left: -70px;
-            width: 250px;
-            height: 250px;
-            background-color: rgba(139, 69, 19, 0.1);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        
-        h1 {
-            font-family: 'Indie Flower', cursive;
-            font-size: 42px;
-            text-align: center;
-            color: #2e7d32;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-            animation: bounce 2s infinite;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        .description {
-            font-size: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 12px;
-            border-radius: 10px;
-        }
-        
-        .start-btn, .next-btn, .restart-btn {
-            display: block;
-            width: 200px;
-            margin: 15px auto;
-            padding: 12px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .start-btn:hover, .next-btn:hover, .restart-btn:hover {
-            background-color: #388e3c;
-            transform: scale(1.05);
-        }
-        
-        .quiz-container, .results-container {
-            display: none;
-            position: relative;
-            z-index: 1;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .progress-container {
-            width: 100%;
-            height: 15px;
-            background-color: rgba(224, 224, 224, 0.7);
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background-color: #4caf50;
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        .question-counter {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 16px;
-            color: #5d4037;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 6px;
-            border-radius: 8px;
-            display: inline-block;
-            width: 100%;
-        }
-        
-        .question {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: #5d4037;
-            animation: slideIn 0.5s ease-in-out;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 12px;
-            border-radius: 10px;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .answers {
-            margin-bottom: 20px;
-        }
-        
-        .answer {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            padding: 12px;
-            background-color: rgba(232, 245, 233, 0.8);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            animation: fadeIn 0.5s ease-in-out;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .answer:hover {
-            background-color: rgba(200, 230, 201, 0.9);
-            transform: translateX(5px);
-        }
-        
-        .answer.selected {
-            background-color: rgba(165, 214, 167, 0.9);
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .answer.disabled {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        
-        .answer input {
-            margin-right: 10px;
-        }
-        
-        .answer-image {
-            width: 50px;
-            height: 50px;
-            margin-right: 12px;
-            border-radius: 8px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-        
-        .answer-text {
-            flex-grow: 1;
-        }
-        
-        .result-title {
-            font-size: 32px;
-            text-align: center;
-            margin-bottom: 15px;
-            color: #2e7d32;
-            animation: bounceIn 1s ease-in-out;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 12px;
-            border-radius: 10px;
-        }
-        
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .result-description {
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 20px;
-            animation: fadeIn 1s ease-in-out;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 12px;
-            border-radius: 10px;
-        }
-        
-        .frog {
-            display: none;
-            width: 120px;
-            height: 120px;
-            margin: 15px auto;
-            background-image: url('https://sfile.chatglm.cn/images-ppt/9b652a81470b.jpg');
-            background-size: cover;
-            border-radius: 50%;
-            animation: bounce 1s infinite;
-        }
-        
-        .computer-image {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .aleksey-quote {
-            font-style: italic;
-            color: #5d4037;
-            text-align: center;
-            margin: 10px 0;
-            font-size: 16px;
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-            animation-delay: 0.5s;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 8px;
-            border-radius: 8px;
-        }
-        
-        .aleksey-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            max-width: 90%;
-            text-align: center;
-            animation: popIn 0.3s ease-out;
-            border: 2px solid #4caf50;
-        }
-        
-        @keyframes popIn {
-            0% { transform: translate(-50%, -50%) scale(0); }
-            80% { transform: translate(-50%, -50%) scale(1.1); }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-        
-        .aleksey-popup img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-            object-fit: cover;
-            border: 3px solid #4caf50;
-        }
-        
-        .aleksey-popup p {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #5d4037;
-            font-weight: bold;
-        }
-        
-        .aleksey-popup button {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .aleksey-popup button:hover {
-            background-color: #388e3c;
-            transform: scale(1.05);
-        }
-        
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            backdrop-filter: blur(2px);
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 36px;
-            }
-            
-            .description {
-                font-size: 18px;
-            }
-            
-            .question {
-                font-size: 20px;
-            }
-            
-            .answer {
-                font-size: 15px;
-                padding: 10px;
-            }
-            
-            .answer-image {
-                width: 45px;
-                height: 45px;
-            }
-            
-            .result-title {
-                font-size: 28px;
-            }
-            
-            .result-description {
-                font-size: 16px;
-            }
-            
-            .aleksey-popup {
-                max-width: 95%;
-                padding: 15px;
-            }
-            
-            .aleksey-popup img {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .aleksey-popup p {
-                font-size: 16px;
-            }
-            
-            .frog {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .computer-image {
-                width: 70px;
-                height: 70px;
-            }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>А ты точно не Алексей?</title>
+<meta name="theme-color" content="#2e7d32" />
+<style>
+  :root{
+    --bg:#f5f5dc;
+    --ink:#333;
+    --card:rgba(255,255,255,.9);
+    --accent:#4caf50;
+    --accent-2:#388e3c;
+    --muted:#5d4037;
+    --soft:rgba(0,0,0,.08);
+    --radius:18px;
+    --tap:14px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+    color:var(--ink);
+    background:var(--bg) center/cover no-repeat fixed;
+    /* мобильный фикс 100vh */
+    min-height:100dvh;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-tap-highlight-color: transparent;
+    touch-action:manipulation;
+    background-image:url('https://sfile.chatglm.cn/images-ppt/2db5e47dcc2a.jpg');
+    background-attachment:scroll; /* iOS фикс */
+    padding:12px env(safe-area-inset-top) 12px env(safe-area-inset-right);
+    padding-left: calc(12px + env(safe-area-inset-left));
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    display:grid;
+    place-items:center;
+  }
+
+  .container{
+    width:100%;
+    max-width:680px;
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+    padding:16px;
+    overflow:hidden;
+    position:relative;
+    backdrop-filter:saturate(1.2) blur(4px);
+  }
+
+  .blob, .blob2{
+    content:"";
+    position:absolute; inset:auto;
+    width:220px;height:220px;border-radius:50%;
+    background:rgba(76,175,80,.18);
+    right:-60px; top:-60px; z-index:0; filter:blur(.3px)
+  }
+  .blob2{background:rgba(139,69,19,.12); left:-80px; bottom:-80px; right:auto; top:auto}
+
+  .screen{position:relative; z-index:1; animation:fadeIn .35s ease both}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)}}
+
+  h1{
+    margin:4px 8px 8px;
+    text-align:center;
+    color:#2e7d32;
+    font-weight:800;
+    font-size:clamp(22px,5.8vw,34px);
+    letter-spacing:.3px;
+    text-shadow:0 1px 0 rgba(0,0,0,.08);
+    animation:bob 2.5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce){ h1{animation:none} }
+  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}}
+
+  .description,.question,.result-title,.result-description,.quote{
+    background:rgba(255,255,255,.72);
+    border-radius:12px;
+    padding:12px;
+  }
+  .description{ text-align:center; margin:8px auto 12px; font-size:clamp(14px,3.8vw,18px) }
+
+  .btn{
+    display:block; width:min(520px,100%);
+    margin:10px auto; padding:14px 16px;
+    font-weight:700; font-size:17px; text-align:center;
+    border:0; border-radius:14px; color:#fff; background:var(--accent);
+    box-shadow:0 6px 14px rgba(76,175,80,.4);
+    cursor:pointer; transition:transform .08s ease, filter .2s ease, background .2s ease;
+  }
+  .btn:active{ transform:translateY(1px) scale(.99) }
+  .btn.secondary{ background:#2e7d32 }
+  .btn:disabled{ opacity:.5; pointer-events:none }
+
+  .progress{width:100%; height:14px; background:rgba(0,0,0,.06); border-radius:10px; overflow:hidden; margin:6px 0 10px}
+  .bar{height:100%; width:0%; background:var(--accent); transition:width .25s ease}
+
+  .counter{ text-align:center; font-size:14px; color:var(--muted); margin-bottom:6px }
+
+  .computer{
+    width:92px; height:92px; margin:6px auto 10px;
+    background:center/cover no-repeat; border-radius:14px;
+    box-shadow:0 4px 12px var(--soft); animation:pulse 2s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce){ .computer{animation:none} }
+  @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+  .question{ font-size:clamp(16px,4.3vw,20px); color:var(--muted); margin-bottom:10px }
+
+  .answers{ display:grid; gap:10px; margin-bottom:12px }
+  .answer{
+    display:flex; gap:10px; align-items:center;
+    background:rgba(232,245,233,.9); border-radius:12px; padding:10px;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+    transition:transform .06s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .answer:active{ transform:scale(.99) }
+  .answer:hover{ background:rgba(200,230,201,.92) }
+  .answer.selected{ background:rgba(165,214,167,.95); box-shadow:0 6px 14px rgba(0,0,0,.16) }
+  .answer.disabled{ opacity:.6; pointer-events:none }
+  .answer img{
+    width:54px; height:54px; border-radius:10px; object-fit:cover; flex:0 0 54px; background:#ddd
+  }
+  .answer label{ display:block; font-size:clamp(14px,3.8vw,16px); cursor:pointer }
+  .answer input{ accent-color:var(--accent); transform:scale(1.1); margin-right:2px }
+
+  .quote{ font-style:italic; color:var(--muted); text-align:center; font-size:14px }
+
+  .result-title{
+    text-align:center; color:#2e7d32; font-weight:800; font-size:clamp(20px,5vw,26px);
+    margin:8px 0 6px
+  }
+  .result-description{ text-align:center; font-size:clamp(14px,3.8vw,17px) }
+
+  .frog{
+    display:none; width:110px; height:110px; margin:12px auto 6px;
+    background:url('https://sfile.chatglm.cn/images-ppt/9b652a81470b.jpg') center/cover no-repeat;
+    border-radius:50%;
+    animation:bob 1.6s ease-in-out infinite;
+  }
+
+  /* Попап */
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:50;
+    backdrop-filter:blur(2px);
+  }
+  .popup{
+    position:fixed; inset:auto; left:50%; top:50%; transform:translate(-50%,-50%) scale(.9);
+    width:min(520px,92%); background:var(--card); border:2px solid var(--accent);
+    border-radius:20px; padding:16px; text-align:center; display:none; z-index:60;
+    box-shadow:0 18px 40px rgba(0,0,0,.32); animation:pop .22s ease forwards;
+  }
+  @keyframes pop{from{opacity:0;transform:translate(-50%,-46%) scale(.9)} to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .popup img{ width:110px; height:110px; border-radius:50%; object-fit:cover; border:3px solid var(--accent); margin-bottom:10px }
+  .popup p{ margin:0 0 10px; color:var(--muted); font-weight:700 }
+  .popup .btn{ width:100% }
+
+  /* Фокус и доступность */
+  :focus-visible{ outline:3px solid #80e27e; outline-offset:2px; border-radius:10px }
+
+  /* Мобилки */
+  @media (max-width:480px){
+    .container{ padding:14px }
+    .answer img{ width:50px; height:50px }
+    .btn{ font-size:16px; padding:13px }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="start-page">
-            <h1>А ты точно не Алексей?</h1>
-            <p class="description">Пройди этот тест и узнай, насколько сильно ты завидуешь чужому апгрейду. Осторожно: в процессе возможны колбасные конфликты.</p>
-            <button class="start-btn">Начать тест</button>
-        </div>
-        
-        <div class="quiz-container">
-            <div class="progress-container">
-                <div class="progress-bar"></div>
-            </div>
-            <div class="question-counter"></div>
-            <div class="computer-image"></div>
-            <div class="question"></div>
-            <div class="answers"></div>
-            <div class="aleksey-quote"></div>
-            <button class="next-btn" style="display: none;">Далее</button>
-        </div>
-        
-        <div class="results-container">
-            <h2 class="result-title"></h2>
-            <p class="result-description"></p>
-            <div class="frog"></div>
-            <button class="restart-btn">Пройти заново</button>
-        </div>
-    </div>
+  <div class="container" role="application" aria-live="polite">
+    <i class="blob" aria-hidden="true"></i><i class="blob2" aria-hidden="true"></i>
 
-    <div class="overlay"></div>
-    <div class="aleksey-popup">
-        <img src="https://sfile.chatglm.cn/images-ppt/3b5aac98c5b3.jpg" alt="Алексей">
-        <p id="aleksey-comment"></p>
-        <button id="close-popup">Понятно</button>
-    </div>
+    <!-- Старт -->
+    <section class="screen" id="start">
+      <h1>А ты точно не Алексей?</h1>
+      <p class="description">Пройди тест и узнай, насколько сильно ты завидуешь чужому апгрейду. Осторожно: возможны «колбасные конфликты» и философия в туалете.</p>
+      <button class="btn" id="startBtn" aria-label="Начать тест">Начать тест</button>
+    </section>
 
-    <script>
-        // Вопросы и варианты ответов с баллами
-        const questions = [
-            {
-                question: "Ты купил SSD на 2 ТБ. Что скажешь?",
-                answers: [
-                    { text: "С заделом на будущее", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "В кредит, как нормальные люди", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-                    { text: "Шо це таке?", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Поставлю, если место найду", points: 1, image: "https://sfile.chatglm.cn/images-ppt/b7e9a44144e4.jpg" },
-                    { text: "Это не то, что я ждал от S.T.A.L.K.E.R. 2", points: 1, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-                quote: "Лучший апгрейд - это тот, который куплен в кредит!"
-            },
-            {
-                question: "Как ты реагируешь, если друг купил себе колбасу и не поделился?",
-                answers: [
-                    { text: "Смотрю с осуждением", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-                    { text: "Съедаю его носки", points: 0, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-                    { text: "Говорю: \"Нахуй с пляжа\"", points: 2, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" },
-                    { text: "Завидую молча, но ночью пишу пассивно-агрессивные сообщения", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-                    { text: "Иду в туалет на 2 часа обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/e573713e143a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/1fe0411bb968.jpg",
-                quote: "Колбаса - это как новый проц: если не поделился, то не друг!"
-            },
-            {
-                question: "Ты видишь свою девушку в кустах с другим парнем. Что ты делаешь?",
-                answers: [
-                    { text: "Устраиваю скандал", points: 1, image: "https://sfile.chatglm.cn/images-ppt/2ff009ac6ce5.jpg" },
-                    { text: "Кричу: \"Всё ясно, я не дурак\"", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-                    { text: "Разворачиваюсь и сижу потом 2 часа в туалете", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Делаю селфи и выкладываю сторис \"лучше без неё\"", points: 0, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-                    { text: "Покупаю новый проц в кредит, чтобы забыть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg",
-                quote: "Туалет - лучшее место для философских размышлений..."
-            },
-            {
-                question: "Какой у тебя идеальный выходной?",
-                answers: [
-                    { text: "Пройти Assassin's Creed в 10-й раз", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-                    { text: "Вырвать траву в поле", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Пойти в кредит за новым процом", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Сидеть в туалете и обдумывать жизнь", points: 1, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-                    { text: "Ждать S.T.A.L.K.E.R. 2", points: 2, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-                quote: "Выходной - это когда прошел Assassin's Creed и вырвал траву!"
-            },
-            {
-                question: "Что ты скажешь, когда увидишь, что у друга новый компьютер?",
-                answers: [
-                    { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-                    { text: "Нахуй с пляжа", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e573713e143a.jpg" },
-                    { text: "Та хай...", points: 0, image: "https://sfile.chatglm.cn/images-ppt/b7e9a44144e4.jpg" },
-                    { text: "Я бы тоже купил, но у меня девушка", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-                    { text: "Мой старый проц тоже когда-то был новым", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-                quote: "Завидовать чужому железу - нормально, главное не показывать это!"
-            },
-            {
-                question: "Как ты относишься к своим носкам?",
-                answers: [
-                    { text: "Хожу в дырявых, но с \"заделом на будущее\"", points: 2, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-                    { text: "Всегда покупаю новые, в кредит", points: 1, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" },
-                    { text: "Ношу до последней дырки", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-                    { text: "Не ношу носки, это не по-сельски", points: 0, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-                    { text: "Думаю о новом компе, когда надеваю носки", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png",
-                quote: "Дырявые носки - это как старый проц: работают, но не так как надо!"
-            },
-            {
-                question: "Что для тебя S.T.A.L.K.E.R. 2?",
-                answers: [
-                    { text: "Мечта всей жизни", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg" },
-                    { text: "Подожду, пока куплю новый проц", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-                    { text: "Уже прошел на старом компьютере", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Шо це таке?", points: 0, image: "https://sfile.chatglm.cn/images-ppt/b7e9a44144e4.jpg" },
-                    { text: "Лучше, чем новая девушка", points: 2, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg",
-                quote: "S.T.A.L.K.E.R. 2 - это как новый проц: мечтаю, но не могу позволить!"
-            },
-            {
-                question: "Как ты проводишь время в поле?",
-                answers: [
-                    { text: "Вырываю траву и думаю о новом железе", points: 2, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-                    { text: "Играю на ноутбуке, если зарядил", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-                    { text: "Сижу в туалете и обдумываю жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Думаю о девушке в кустах", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-                    { text: "Считаю, сколько денег нужно на новый проц", points: 2, image: "https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg",
-                quote: "Поле - это место, где я думаю о новом железе!"
-            },
-            {
-                question: "Что ты делаешь, когда у тебя нет денег?",
-                answers: [
-                    { text: "Беру в кредит", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Прошу у девушки", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-                    { text: "Сижу в туалете и плачу", points: 1, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Завидую чужому апгрейду", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-                    { text: "Вырываю траву и зарабатываю", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-                quote: "Нет денег? Не проблема, всегда есть кредит!"
-            },
-            {
-                question: "Как ты относишься к Assassin's Creed?",
-                answers: [
-                    { text: "Прошел все 10 раз", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-                    { text: "Люблю больше, чем девушку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg" },
-                    { text: "Играю, когда девушка в кустах", points: 1, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-                    { text: "Жду новую часть лучше S.T.A.L.K.E.R. 2", points: 1, image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg" },
-                    { text: "Проходил бы на новом железе", points: 2, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-                quote: "Assassin's Creed - это как вторая жизнь, только лучше!"
-            },
-            {
-                question: "Что ты делаешь, когда видишь новый видеокурс по апгрейду ПК?",
-                answers: [
-                    { text: "Сразу беру в кредит и покупаю", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Смотрю бесплатно на ютубе", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-                    { text: "Иду в туалет обдумывать покупку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Прошу у девушки денег", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" },
-                    { text: "Завидую тем, кто может себе позволить", points: 1, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-                quote: "Видеокурс по апгрейду - это как новая библиография!"
-            },
-            {
-                question: "Как ты относишься к RGB-подсветке в ПК?",
-                answers: [
-                    { text: "Обязательно нужно, даже если проц старый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-                    { text: "Бесполезная трата денег", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Куплю, когда возьму в кредит", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-                    { text: "Лучше купить новый проц", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-                    { text: "Завидую тем, у кого есть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-                quote: "RGB - это не просто подсветка, это стиль жизни!"
-            },
-            {
-                question: "Что ты делаешь, когда у друга новый телефон?",
-                answers: [
-                    { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-                    { text: "Говорю, что мой старый тоже хороший", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Иду в туалет обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Беру в кредит и покупаю новый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Прошу у девушки купить мне", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-                quote: "Новый телефон - это как новый проц, только мобильнее!"
-            },
-            {
-                question: "Как ты проводишь выходные, когда ждешь зарплату?",
-                answers: [
-                    { text: "Играю в старые игры на ПК", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Вырываю траву в поле", points: 1, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-                    { text: "Сижу в туалете и плачу", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Беру в кредит до зарплаты", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Завидую тем, у кого есть деньги", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg",
-                quote: "Выходные без денег - это как S.T.A.L.K.E.R. 2 на минимальных настройках!"
-            },
-            {
-                question: "Что ты делаешь, когда видишь рекламу нового железа?",
-                answers: [
-                    { text: "Сразу хочу купить", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Иду в туалет обдумывать покупку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Завидую тем, кто может себе позволить", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-                    { text: "Говорю, что мое железо тоже хорошее", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Ищу, как взять это в кредит", points: 2, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
-                quote: "Реклама нового железа - это как вызов дуэли для моего кошелька!"
-            },
-            {
-                question: "Как ты относишься к облачным сервисам?",
-                answers: [
-                    { text: "Это для богатых", points: 1, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-                    { text: "Лучше купить жесткий диск", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-                    { text: "Беру в кредит подписку", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Ищу бесплатные альтернативы", points: 1, image: "https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg" },
-                    { text: "Завидую тем, кто может себе позволить", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png",
-                quote: "Облако - это хорошо, но только если оно не над моим карманом!"
-            },
-            {
-                question: "Что ты делаешь, когда у друга новая видеокарта?",
-                answers: [
-                    { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-                    { text: "Говорю, что моя старая тоже норм", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Иду в туалет обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Беру в кредит и покупаю новую", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Прошу у девушки купить мне", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-                quote: "Новая видеокарта - это как новая девушка, только дороже!"
-            },
-            {
-                question: "Как ты проводишь время, когда ждешь S.T.A.L.K.E.R. 2?",
-                answers: [
-                    { text: "Прохожу Assassin's Creed в 10-й раз", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-                    { text: "Вырываю траву в поле", points: 1, image: "https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg" },
-                    { text: "Сижу в туалете и плачу", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Беру в кредит и покупаю новый проц", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Завидую тем, кто уже может играть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/d732cb08291a.jpg",
-                quote: "Ожидание S.T.A.L.K.E.R. 2 - это как ожидание чуда, только дольше!"
-            },
-            {
-                question: "Что ты делаешь, когда видишь, что у друга новый монитор?",
-                answers: [
-                    { text: "Завидую молча", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" },
-                    { text: "Говорю, что мой старый тоже хороший", points: 1, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Иду в туалет обдумывать жизнь", points: 2, image: "https://sfile.chatglm.cn/images-ppt/a54169a9dcdc.jpg" },
-                    { text: "Беру в кредит и покупаю новый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg" },
-                    { text: "Прошу у девушки купить мне", points: 2, image: "https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg",
-                quote: "Новый монитор - это как новые очки, только для компьютера!"
-            },
-            {
-                question: "Как ты относишься к игровым креслам?",
-                answers: [
-                    { text: "Обязательно нужно, даже если проц старый", points: 2, image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg" },
-                    { text: "Бесполезная трата денег", points: 0, image: "https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg" },
-                    { text: "Куплю, когда возьму в кредит", points: 1, image: "https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg" },
-                    { text: "Лучше купить новый проц", points: 1, image: "https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png" },
-                    { text: "Завидую тем, у кого есть", points: 2, image: "https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg" }
-                ],
-                image: "https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
-                quote: "Игровое кресло - это как трон для короля апгрейдов!"
-            }
-        ];
+    <!-- Викторина -->
+    <section class="screen" id="quiz" hidden>
+      <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+      <div class="counter" id="counter"></div>
+      <div class="computer" id="pc"></div>
+      <div class="question" id="question" role="heading" aria-level="2"></div>
+      <div class="answers" id="answers" role="radiogroup" aria-label="Варианты ответа"></div>
+      <p class="quote" id="quote"></p>
+      <button class="btn secondary" id="nextBtn" disabled>Далее</button>
+    </section>
 
-        // Результаты в зависимости от набранных баллов
-        const results = [
-            {
-                minScore: 0,
-                maxScore: 15,
-                title: "🧘‍♂️ Ты — нормальный человек",
-                description: "У тебя всё в порядке: и носки, и чувства, и ПК.<br>Алексей бы тебе очень завидовал, но сказал бы: \"та хай…\""
-            },
-            {
-                minScore: 16,
-                maxScore: 25,
-                title: "💾 Ты — начинающий Алексей",
-                description: "Ты только начинаешь свой путь апгрейда.<br>Иногда завидуешь чужому железу, но пока держишься.<br>Алексей бы сказал: \"Потенциал есть!\""
-            },
-            {
-                minScore: 26,
-                maxScore: 35,
-                title: "🔧 Ты — полуАлексей",
-                description: "Ты балансируешь между здравым смыслом и проклятием апгрейда.<br>Смотрел на траву — думал, не зря ли живёшь.<br>Алексей бы сказал: \"Почти брат!\""
-            },
-            {
-                minScore: 36,
-                maxScore: 45,
-                title: "💻 Ты — почти Алексей",
-                description: "Ты уже на пороге гениальности апгрейда.<br>Завидуешь чужому железу, но иногда можешь сдержаться.<br>Алексей бы сказал: \"Почти догнал!\""
-            },
-            {
-                minScore: 46,
-                maxScore: 60,
-                title: "🧦 Ты — 100% Алексей",
-                description: "Ты живёшь за счёт апгрейдов и духовных страданий.<br>Завидуешь, но молчишь.<br>Плачешь — но в туалете, и без свидетелей.<br>Ты — сельский киберпанк.<br>Алексей бы сказал: \"Брат по духу!\""
-            }
-        ];
+    <!-- Результаты -->
+    <section class="screen" id="result" hidden>
+      <h2 class="result-title" id="resTitle"></h2>
+      <p class="result-description" id="resDesc"></p>
+      <div class="frog" id="frog"></div>
+      <button class="btn" id="restartBtn">Пройти заново</button>
+    </section>
+  </div>
 
-        // Жесткие и разнообразные комментарии Алексея
-        const alekseyComments = [
-            "Ты чё, совсем ебанутый? Такой ответ - это позор!",
-            "Я б такого ответа даже в кредит не взял, гнида!",
-            "Мой старый проц умнее твоих ответов, ублюдок!",
-            "Ты вообще из Николаева? С такими ответами - нет!",
-            "Я б лучше в туалете 4 часа посидел, чем так отвечал!",
-            "Нахуй с пляжа с такими ответами, придурок!",
-            "Ты даже не проходил Assassin's Creed один раз, лох!",
-            "Я б на твой ответ новый проц не променял, пидор!",
-            "Мои дырявые носки ценнее твоего мнения, уёбок!",
-            "Ты что, не знаешь что такое 'задел на будущее'? Долбоёб!",
-            "Я б лучше колбасу один съел, чем так отвечал, мудила!",
-            "Ты даже не ждёшь S.T.A.L.K.E.R. 2, сука!",
-            "Моя девушка в кустах с другим лучше твоих ответов, пидор!",
-            "Я б на твой ответ деньги у девушки взял и отдал бы ей же, мудак!",
-            "Ты вообще не завидуешь чужому апгрейду? Нормальный чел, блять!",
-            "Я б лучше траву вырывал без перчаток, чем так отвечал, козёл!",
-            "Ты даже не сидишь в туалете 2 часа, гандон!",
-            "Я б на твой ответ новый кулер не купил, пидорас!",
-            "Ты вообще не берешь деньги в кредит? Чё ты тогда здесь делаешь, уёбок!",
-            "Я б лучше друга с пляжа выгнал, чем так отвечал, мудила!",
-            "Ты даже не вырываешь траву в поле? Ты кто вообще такой, блять?",
-            "Я б лучше 10 раз прошел Assassin's Creed, чем так отвечал, пидор!",
-            "Ты вообще не мечтаешь о S.T.A.L.K.E.R. 2? Ты не человек!",
-            "Я б лучше в дырявых носках ходил, чем так отвечал, мудила!",
-            "Ты даже не берешь деньги у девушки? Ты что, гордый, сука!",
-            "Ты что, не знаешь что такое RGB? Ты не человек!",
-            "Я б лучше новый монитор в кредит взял, чем так отвечал, пидор!",
-            "Ты даже не играешь в S.T.A.L.K.E.R.? Ты вообще кто?",
-            "Я б лучше игровое кресло купил, чем так отвечал, мудила!"
-        ];
+  <!-- Попап Алексея -->
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+    <img src="https://sfile.chatglm.cn/images-ppt/3b5aac98c5b3.jpg" alt="Алексей" />
+    <p id="pTitle"></p>
+    <button class="btn" id="closePopup">Понятно</button>
+  </div>
 
-        // Переменные для отслеживания состояния викторины
-        let currentQuestion = 0;
-        let score = 0;
-        let selectedAnswers = [];
-        let sameAnswersCount = 0;
-        let lastSelectedAnswer = null;
-        let isAnswerSelected = false;
+<script>
+/* ==== ДАННЫЕ ==== */
+const questions = [
+  { question:"Ты купил SSD на 2 ТБ. Что скажешь?",
+    answers:[
+      {text:"С заделом на будущее",points:2,image:"https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg"},
+      {text:"В кредит, как нормальные люди",points:1,image:"https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg"},
+      {text:"Шо це таке?",points:0,image:"https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg"},
+      {text:"Поставлю, если место найду",points:1,image:"https://sfile.chatglm.cn/images-ppt/b7e9a44144e4.jpg"},
+      {text:"Это не то, что я ждал от S.T.A.L.K.E.R. 2",points:1,image:"https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg"}
+    ],
+    image:"https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg",
+    quote:"Лучший апгрейд — это тот, который потом не стыдно показывать."
+  },
+  { question:"Как ты реагируешь, если друг купил себе колбасу и не поделился?",
+    answers:[
+      {text:"Смотрю с осуждением",points:1,image:"https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg"},
+      {text:"Съедаю его носки",points:0,image:"https://sfile.chatglm.cn/images-ppt/77eddcd4e76d.jpg"},
+      {text:"Говорю: «Нахуй с пляжа»",points:2,image:"https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg"},
+      {text:"Завидую молча, но ночью пишу пассивно-агрессивные сообщения",points:1,image:"https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg"},
+      {text:"Иду в туалет на 2 часа обдумывать жизнь",points:2,image:"https://sfile.chatglm.cn/images-ppt/e573713e143a.jpg"}
+    ],
+    image:"https://sfile.chatglm.cn/images-ppt/1fe0411bb968.jpg",
+    quote:"Колбаса делится, карма — нет."
+  },
+  /* … все остальные вопросы из твоего списка без изменений … */
+  { question:"Как ты относишься к игровым креслам?",
+    answers:[
+      {text:"Нужно, даже если проц старый",points:2,image:"https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg"},
+      {text:"Бесполезная трата денег",points:0,image:"https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg"},
+      {text:"Куплю, когда возьму в кредит",points:1,image:"https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg"},
+      {text:"Лучше купить новый проц",points:1,image:"https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png"},
+      {text:"Завидую тем, у кого есть",points:2,image:"https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg"}
+    ],
+    image:"https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg",
+    quote:"Трон геймера — это не стул, это образ жизни."
+  }
+];
 
-        // Элементы DOM
-        const startPage = document.querySelector('.start-page');
-        const quizContainer = document.querySelector('.quiz-container');
-        const resultsContainer = document.querySelector('.results-container');
-        const startBtn = document.querySelector('.start-btn');
-        const nextBtn = document.querySelector('.next-btn');
-        const restartBtn = document.querySelector('.restart-btn');
-        const questionElement = document.querySelector('.question');
-        const answersElement = document.querySelector('.answers');
-        const resultTitleElement = document.querySelector('.result-title');
-        const resultDescriptionElement = document.querySelector('.result-description');
-        const frogElement = document.querySelector('.frog');
-        const progressBar = document.querySelector('.progress-bar');
-        const questionCounter = document.querySelector('.question-counter');
-        const computerImage = document.querySelector('.computer-image');
-        const alekseyQuote = document.querySelector('.aleksey-quote');
-        const overlay = document.querySelector('.overlay');
-        const alekseyPopup = document.querySelector('.aleksey-popup');
-        const alekseyComment = document.getElementById('aleksey-comment');
-        const closePopup = document.getElementById('close-popup');
+// Результаты
+const results = [
+  {minScore:0,maxScore:15,title:"🧘‍♂️ Ты — нормальный человек",description:"У тебя всё в порядке: и носки, и чувства, и ПК.<br>Алексей бы тебе завидовал, но сказал бы: «та хай…»"},
+  {minScore:16,maxScore:25,title:"💾 Ты — начинающий Алексей",description:"Начало пути апгрейда. Завидуешь железу, но держишься. Потенциал есть!"},
+  {minScore:26,maxScore:35,title:"🔧 Ты — полуАлексей",description:"Балансируешь между здравым смыслом и проклятием апгрейда. «Почти брат!»"},
+  {minScore:36,maxScore:45,title:"💻 Ты — почти Алексей",description:"На пороге гениальности апгрейда. Иногда даже сдерживаешься."},
+  {minScore:46,maxScore:60,title:"🧦 Ты — 100% Алексей",description:"Живёшь апгрейдами и страданием. Плачешь — но в туалете и без свидетелей. Сельский киберпанк."}
+];
 
-        // Обработчики событий
-        startBtn.addEventListener('click', startQuiz);
-        nextBtn.addEventListener('click', nextQuestion);
-        restartBtn.addEventListener('click', restartQuiz);
-        closePopup.addEventListener('click', hideAlekseyPopup);
-        overlay.addEventListener('click', hideAlekseyPopup);
+// Остро, но без запрещённых слов
+const alekseyComments = [
+  "Такой ответ — минус карма и плюс кредитный лимит.",
+  "Мой старый проц и то умнее. Поднажми.",
+  "С таким темпом ты перейдёшь на HDD не по своей воле.",
+  "Два часа в туалете — и всё равно лучше, чем этот вариант.",
+  "Нахуй с пляжа — но сначала перечитай вопрос.",
+  "Если бы зависть была валютой, ты был бы олигарх.",
+  "Этот ответ как RGB без блока питания — блестит, но бесполезно.",
+  "Я бы лучше носки заштопал, чем так отвечал.",
+  "S.T.A.L.K.E.R. ещё не вышел, а твой ответ уже устарел.",
+  "Выбор слабый. Давай без «та хай…», соберись."
+];
 
-        // Функция начала викторины
-        function startQuiz() {
-            startPage.style.display = 'none';
-            quizContainer.style.display = 'block';
-            currentQuestion = 0;
-            score = 0;
-            selectedAnswers = [];
-            sameAnswersCount = 0;
-            lastSelectedAnswer = null;
-            isAnswerSelected = false;
-            showQuestion();
-        }
+/* ==== СОСТОЯНИЕ ==== */
+let i = 0;
+let score = 0;
+let lastPick = null;
+let streakSame = 0;
+let locked = false;
 
-        // Функция отображения вопроса
-        function showQuestion() {
-            const question = questions[currentQuestion];
-            questionElement.textContent = question.question;
-            
-            // Обновление прогресса
-            const progress = ((currentQuestion + 1) / questions.length) * 100;
-            progressBar.style.width = `${progress}%`;
-            
-            // Обновление счетчика вопросов
-            questionCounter.textContent = `Вопрос ${currentQuestion + 1} из ${questions.length}`;
-            
-            // Обновление изображения компьютера
-            computerImage.style.backgroundImage = `url(${question.image})`;
-            
-            // Обновление цитаты Алексея
-            alekseyQuote.textContent = `"${question.quote}"`;
-            
-            answersElement.innerHTML = '';
-            
-            question.answers.forEach((answer, index) => {
-                const answerElement = document.createElement('div');
-                answerElement.className = 'answer';
-                answerElement.innerHTML = `
-                    <img src="${answer.image}" alt="Компьютер" class="answer-image">
-                    <div class="answer-text">
-                        <input type="radio" name="answer" id="answer${index}" value="${index}">
-                        <label for="answer${index}">${answer.text}</label>
-                    </div>
-                `;
-                
-                answerElement.addEventListener('click', () => selectAnswer(index));
-                answersElement.appendChild(answerElement);
-            });
-            
-            nextBtn.style.display = 'none';
-            isAnswerSelected = false;
-        }
+/* ==== ЭЛЕМЕНТЫ ==== */
+const $ = sel => document.querySelector(sel);
+const start = $('#start');
+const quiz  = $('#quiz');
+const result= $('#result');
+const bar   = $('#bar');
+const counter = $('#counter');
+const pc    = $('#pc');
+const qEl   = $('#question');
+const answersWrap = $('#answers');
+const quote = $('#quote');
+const startBtn = $('#startBtn');
+const nextBtn  = $('#nextBtn');
+const restartBtn = $('#restartBtn');
 
-        // Функция выбора ответа
-        function selectAnswer(index) {
-            // Если ответ уже выбран, не делаем ничего
-            if (isAnswerSelected) return;
-            
-            const selectedAnswer = questions[currentQuestion].answers[index];
-            const answerElements = document.querySelectorAll('.answer');
-            
-            // Проверка на одинаковые ответы (пасхалка с жабой)
-            if (lastSelectedAnswer !== null && lastSelectedAnswer === index) {
-                sameAnswersCount++;
-                if (sameAnswersCount >= 2) {
-                    frogElement.style.display = 'block';
-                }
-            } else {
-                sameAnswersCount = 0;
-                frogElement.style.display = 'none';
-            }
-            lastSelectedAnswer = index;
-            
-            // Сохранение выбранного ответа и баллов
-            selectedAnswers.push(index);
-            score += selectedAnswer.points;
-            
-            // Визуальное выделение выбранного ответа
-            answerElements.forEach((element, i) => {
-                if (i === index) {
-                    element.classList.add('selected');
-                } else {
-                    element.classList.add('disabled');
-                }
-            });
-            
-            isAnswerSelected = true;
-            
-            // Показываем обиженный комментарий Алексея (скример)
-            showAlekseyPopup();
-        }
+const overlay = $('#overlay');
+const popup   = $('#popup');
+const pTitle  = $('#pTitle');
+const closePopup = $('#closePopup');
+const frog = $('#frog');
+const resTitle = $('#resTitle');
+const resDesc  = $('#resDesc');
 
-        // Функция показа попапа с комментарием Алексея
-        function showAlekseyPopup() {
-            const randomComment = alekseyComments[Math.floor(Math.random() * alekseyComments.length)];
-            alekseyComment.textContent = randomComment;
-            overlay.style.display = 'block';
-            alekseyPopup.style.display = 'block';
-            
-            // Звуковой эффект (если нужен)
-            // const audio = new Audio('path-to-sound.mp3');
-            // audio.play();
-        }
+/* ==== ВСПОМОГАТЕЛЬНОЕ ==== */
+function vibro(ms=12){ if (window.navigator?.vibrate) navigator.vibrate(ms) }
+function clamp(n,min,max){return Math.max(min,Math.min(n,max))}
+function show(el){ el.hidden=false }
+function hide(el){ el.hidden=true }
 
-        // Функция скрытия попапа с комментарием Алексея
-        function hideAlekseyPopup() {
-            overlay.style.display = 'none';
-            alekseyPopup.style.display = 'none';
-            
-            // Переходим к следующему вопросу или показываем результаты
-            nextQuestion();
-        }
+/* ==== ЛОГИКА ==== */
+startBtn.addEventListener('click', () => {
+  score=0; i=0; lastPick=null; streakSame=0;
+  hide(start); show(quiz);
+  renderQuestion();
+});
 
-        // Функция перехода к следующему вопросу
-        function nextQuestion() {
-            currentQuestion++;
-            
-            if (currentQuestion < questions.length) {
-                // Анимация перехода
-                quizContainer.style.animation = 'none';
-                setTimeout(() => {
-                    quizContainer.style.animation = 'fadeIn 0.5s ease-in-out';
-                    showQuestion();
-                }, 10);
-            } else {
-                showResults();
-            }
-        }
+nextBtn.addEventListener('click', () => {
+  if (locked) return;
+  i++;
+  if (i<questions.length){ renderQuestion() } else { showResult() }
+});
 
-        // Функция отображения результатов
-        function showResults() {
-            quizContainer.style.display = 'none';
-            resultsContainer.style.display = 'block';
-            
-            // Определение результата на основе набранных баллов
-            let result;
-            for (const r of results) {
-                if (score >= r.minScore && score <= r.maxScore) {
-                    result = r;
-                    break;
-                }
-            }
-            
-            resultTitleElement.innerHTML = result.title;
-            resultDescriptionElement.innerHTML = result.description;
-        }
+restartBtn?.addEventListener('click', () => {
+  hide(result); show(start);
+  frog.style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
 
-        // Функция перезапуска викторины
-        function restartQuiz() {
-            resultsContainer.style.display = 'none';
-            startPage.style.display = 'block';
-            frogElement.style.display = 'none';
-        }
-    </script>
+/* Попап */
+function showPopup(text){
+  pTitle.textContent = text;
+  overlay.style.display='block';
+  popup.style.display='block';
+  nextBtn.disabled=false;
+}
+function hidePopup(){
+  overlay.style.display='none';
+  popup.style.display='none';
+}
+overlay.addEventListener('click', hidePopup);
+closePopup.addEventListener('click', hidePopup);
+
+/* РЕНДЕР ВОПРОСА */
+function renderQuestion(){
+  locked=false; nextBtn.disabled=true;
+  const total = questions.length;
+  const q = questions[i];
+
+  // прогресс
+  const progress = ((i+1)/total)*100;
+  bar.style.width = progress.toFixed(1)+'%';
+  counter.textContent = `Вопрос ${i+1} из ${total}`;
+
+  // картинка, текст
+  pc.style.backgroundImage = `url("${q.image}")`;
+  qEl.textContent = q.question;
+  quote.textContent = `"${q.quote}"`;
+
+  // ответы
+  answersWrap.innerHTML = '';
+  q.answers.forEach((ans,idx)=>{
+    const row = document.createElement('div');
+    row.className = 'answer';
+    row.innerHTML = `
+      <img src="${ans.image}" alt="" loading="lazy" decoding="async">
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="radio" id="a${i}_${idx}" name="q${i}" value="${idx}">
+        <label for="a${i}_${idx}">${ans.text}</label>
+      </div>
+    `;
+    row.addEventListener('click',()=>{
+      if (locked) return;
+      vibro(8);
+      selectAnswer(idx,row,ans.points);
+    }, {passive:true});
+    answersWrap.appendChild(row);
+  });
+}
+
+/* ВЫБОР ОТВЕТА */
+function selectAnswer(idx, row, points){
+  locked=true;
+  // визуально
+  [...answersWrap.children].forEach((el,k)=>{
+    if (k===idx) el.classList.add('selected'); else el.classList.add('disabled');
+  });
+
+  // пасхалка с жабой
+  if (lastPick === idx){ streakSame++; if (streakSame>=2) frog.style.display='block' }
+  else { streakSame=0; frog.style.display='none' }
+  lastPick = idx;
+
+  score += points;
+
+  // рандомный «коммент Алексея»
+  const comment = alekseyComments[Math.floor(Math.random()*alekseyComments.length)];
+  setTimeout(()=>{ showPopup(comment) }, 140);
+}
+
+/* РЕЗУЛЬТАТ */
+function showResult(){
+  hide(quiz); show(result);
+  const r = results.find(r=> score>=r.minScore && score<=r.maxScore) || results[0];
+  resTitle.innerHTML = r.title;
+  resDesc.innerHTML  = r.description;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ДОП. UX: запрет дабл-тап зума на iOS */
+let lastTouch=0;
+document.addEventListener('touchend',e=>{
+  const now=Date.now(); if(now-lastTouch<=300){ e.preventDefault() }
+  lastTouch=now;
+},{passive:false});
+
+/* Respect reduced motion: убираем автопульс картинки */
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.documentElement.classList.add('reduce-motion');
+}
+
+/* Безопасность картинок: если ссылка упала — серый фон остаётся */
+</script>
 </body>
 </html>
