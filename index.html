@@ -1,431 +1,355 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-<meta name="theme-color" content="#0b0f14" />
-<title>Next Gen 1.2 — Ты точно не Алексей?</title>
-<link rel="preconnect" href="https://sfile.chatglm.cn" crossorigin>
-<style>
-  :root{
-    --bg:#070b11; --bg2:#0d131c; --ink:#e8f0ff; --muted:#9db0c9;
-    --card: rgba(255,255,255,.06); --card2: rgba(255,255,255,.12);
-    --acc:#7dffb0; --acc2:#38d47a; --blue:#60a5fa; --vio:#b794f4; --amber:#fbbf24; --rose:#fb7185;
-    --glass: rgba(255,255,255,.07);
-    --shadow: 0 18px 56px rgba(0,0,0,.5); --r:20px;
-  }
-  @media (prefers-color-scheme: light){
-    :root{ --bg:#f5f7fb; --bg2:#ffffff; --ink:#0e172a; --muted:#4a5d74; --card: rgba(0,0,0,.05); --card2: rgba(0,0,0,.08); --acc:#22c55e; --acc2:#16a34a; --blue:#2563eb; --vio:#7c3aed; --amber:#d97706; --rose:#e11d48; --shadow: 0 14px 34px rgba(0,0,0,.16) }
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-    color:var(--ink); background:radial-gradient(90% 65% at 50% -20%,#112136 0%,transparent 70%), var(--bg);
-    min-height:100dvh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    -webkit-tap-highlight-color: transparent; touch-action:manipulation;
-    display:grid; place-items:center; padding:12px;
-    overflow-x:hidden;
-  }
-  .wrap{ width:100%; max-width:900px; background:linear-gradient(180deg,var(--bg2) 0%,transparent 100%), var(--glass);
-    border:1px solid var(--card2); border-radius:28px; box-shadow:var(--shadow); padding:16px; position:relative; overflow:hidden }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack на Русском</title>
+    <style>
+        /* Стили для игры */
+        :root {
+            --bg-color: #1a3a1a;
+            --table-color: #0d5c0d;
+            --card-bg: #ffffff;
+            --text-color: #ffffff;
+            --button-bg: #d4af37;
+            --button-hover-bg: #b89a2a;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  /* декоративные объекты */
-  .blob,.blob2,.blob3{ position:absolute; border-radius:50%; filter:blur(2px); opacity:.28; pointer-events:none }
-  .blob{ right:-120px; top:-120px; width:320px; height:320px; background:radial-gradient(closest-side,var(--acc),transparent) }
-  .blob2{ left:-140px; bottom:-140px; width:360px; height:360px; background:radial-gradient(closest-side,var(--blue),transparent) }
-  .blob3{ right:20%; bottom:-160px; width:300px; height:300px; background:radial-gradient(closest-side,var(--vio),transparent) }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
 
-  /* общие */
-  .screen{ position:relative; z-index:1; animation:fade .28s ease both }
-  @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
-  h1{ margin:6px 8px 8px; text-align:center; font-weight:900; letter-spacing:.3px; font-size:clamp(22px,5.6vw,40px);
-      background:linear-gradient(90deg,#a7f3d0,#93c5fd,#e9d5ff); -webkit-background-clip:text; background-clip:text; color:transparent }
-  .lead{ margin:0 auto 12px; text-align:center; color:var(--muted); font-size:clamp(14px,3.8vw,18px); background:var(--card2); padding:12px; border-radius:16px }
+        .game-container {
+            background-color: var(--table-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+        }
 
-  .row{ display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap }
-  .btn{ appearance:none; border:0; cursor:pointer; user-select:none; color:#07140a; font-weight:900; letter-spacing:.2px;
-    background:linear-gradient(180deg,var(--acc),var(--acc2));
-    border-radius:16px; padding:14px 18px; min-width:170px; box-shadow:0 12px 26px rgba(50,205,50,.22);
-    transition:transform .08s ease, filter .2s ease; font-size:16px }
-  .btn:active{ transform:translateY(1px) scale(.99) }
-  .btn.alt{ background:var(--card2); color:var(--ink); box-shadow:none }
-  .btn.ghost{ background:transparent; color:var(--muted); box-shadow:none }
-  .btn[disabled]{ opacity:.5; pointer-events:none }
+        h1 {
+            margin-top: 0;
+            color: var(--button-bg);
+        }
 
-  .progress{ width:100%; height:14px; background:var(--card); border-radius:12px; overflow:hidden; margin:4px 0 10px }
-  .bar{ height:100%; width:0%; background:linear-gradient(90deg,var(--acc),var(--blue)); transition:width .25s ease }
+        .hand {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 120px;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
 
-  .counter{ text-align:center; color:var(--muted); font-size:14px; margin-bottom:6px }
+        .card {
+            background-color: var(--card-bg);
+            color: #000;
+            width: 70px;
+            height: 100px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .card.hidden {
+            background-color: #b30000;
+        }
 
-  .hero{ width:100%; height:190px; margin:6px auto 12px; border-radius:18px; background:#111 center/cover no-repeat; box-shadow:0 8px 20px rgba(0,0,0,.28); display:flex; align-items:flex-end; overflow:hidden; transform-style:preserve-3d }
-  .hero .caption{ background:linear-gradient(180deg,transparent,rgba(0,0,0,.6)); color:#fff; width:100%; padding:8px 10px; font-size:14px }
-  .hero.tilt{ transition:transform .12s ease }
+        .card::before, .card::after {
+            position: absolute;
+            font-size: 0.9rem;
+        }
 
-  .q{ font-size:clamp(16px,4.3vw,22px); background:var(--card2); border-radius:16px; padding:14px; margin-bottom:10px; position:relative; overflow:hidden }
-  .q::after{ content:""; position:absolute; inset:0; background:radial-gradient(160px 40px at var(--mx,50%) -20px, rgba(125,255,176,.12), transparent 70%); pointer-events:none }
+        .card::before { top: 5px; left: 5px; }
+        .card::after { bottom: 5px; right: 5px; transform: rotate(180deg); }
 
-  .answers{ display:grid; gap:12px; margin-bottom:14px }
-  .ans{ display:flex; gap:12px; align-items:center; padding:12px; background:rgba(125,255,176,.08); border:1px solid rgba(125,255,176,.22); border-radius:16px; transition:transform .08s ease, background .25s ease, box-shadow .25s ease, filter .25s ease; position:relative; overflow:hidden }
-  .ans:hover{ background:rgba(125,255,176,.12) }
-  .ans.selected{ background:rgba(125,255,176,.2); box-shadow:0 8px 22px rgba(0,0,0,.22) }
-  .ans.disabled{ opacity:.62; pointer-events:none; filter:saturate(.7) }
-  .ans img{ width:64px; height:64px; border-radius:14px; object-fit:cover; flex:0 0 64px; background:#222 }
-  .ans label{ cursor:pointer; display:block; font-size:clamp(14px,3.8vw,16px) }
-  .ans input{ accent-color:#34d399; transform:scale(1.15); margin-right:2px }
+        .card.suit-♥, .card.suit-♦ { color: red; }
+        .card.suit-♣, .card.suit-♠ { color: black; }
 
-  /* мини‑частицы при выборе */
-  .spark{ position:absolute; width:8px; height:8px; border-radius:50%; background:currentColor; pointer-events:none; mix-blend-mode:screen; filter:blur(.4px); animation:spark .6s ease forwards }
-  @keyframes spark{ to{ transform:translate(var(--dx),var(--dy)) scale(0.2); opacity:0 } }
+        .game-info, .player-actions {
+            margin: 1.5rem 0;
+        }
 
-  /* тосты */
-  .toast{ position:fixed; left:50%; top:10px; transform:translateX(-50%); background:var(--bg2); border:1px solid var(--card2); padding:10px 12px; border-radius:14px; color:var(--ink); box-shadow:var(--shadow); display:none; z-index:60; max-width:92%; text-align:center }
+        #message {
+            min-height: 24px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffdd57;
+        }
 
-  /* результаты */
-  .result-title{ text-align:center; font-weight:900; font-size:clamp(20px,5vw,28px); margin:8px 0 6px }
-  .result-desc{ text-align:center; color:var(--muted); font-size:clamp(14px,3.8vw,17px); background:var(--card2); border-radius:14px; padding:12px }
-  .grid{ display:grid; gap:12px; grid-template-columns:1fr; margin:12px 0 }
-  .card{ background:var(--card2); border:1px solid var(--card); border-radius:16px; padding:12px }
-  .stat{ display:flex; align-items:center; gap:10px }
-  .stat .bar{ height:10px; width:100%; border-radius:999px; background:var(--card); overflow:hidden }
-  .stat .val{ height:100%; width:0%; background:linear-gradient(90deg,var(--amber),var(--rose)); transition:width .5s cubic-bezier(.2,.9,.2,1.1) }
-  .badges{ display:flex; flex-wrap:wrap; gap:8px }
-  .badge{ font-size:12px; padding:6px 8px; border-radius:999px; background:linear-gradient(180deg,#e9d5ff,#f5f3ff); color:#4c1d95; border:1px solid rgba(0,0,0,.06) }
-  .frog{ display:none; width:120px; height:120px; margin:12px auto 8px; border-radius:50%; background:url('https://sfile.chatglm.cn/images-ppt/9b652a81470b.jpg') center/cover no-repeat; animation:pulse 1.8s ease-in-out infinite }
-  @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+        button {
+            background-color: var(--button-bg);
+            color: #000;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+        }
 
-  /* конфетти */
-  .confetti{ position:fixed; inset:0; pointer-events:none; z-index:80 }
-  .piece{ position:absolute; width:8px; height:14px; background:var(--c); opacity:.9; transform:translate3d(0,0,0); animation:fall var(--t) cubic-bezier(.2,.9,.2,1) forwards }
-  @keyframes fall{ to{ transform:translate3d(var(--x), 110vh, 0) rotate(var(--r)) } }
+        button:hover:not(:disabled) {
+            background-color: var(--button-hover-bg);
+        }
 
-  @media (max-width:560px){ .hero{ height:170px } .wrap{ padding:14px } .ans img{ width:58px; height:58px } .btn{ padding:13px } }
-  @media (prefers-reduced-motion: reduce){ .hero,.ans,.q,.spark,.frog{ animation:none !important } }
-</style>
+        button:disabled {
+            background-color: #777;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap" role="application" aria-live="polite">
-    <i class="blob" aria-hidden="true"></i><i class="blob2" aria-hidden="true"></i><i class="blob3" aria-hidden="true"></i>
 
-    <!-- Старт -->
-    <section class="screen" id="start">
-      <h1>Next Gen 1.2 — Ты точно не Алексей?</h1>
-      <p class="lead">Гигантский апдейт: мем‑картинки, новые шутки, плавные анимации, без звуков и вибраций. Мобилка — как дома, iOS и Android — уважаем.</p>
-      <div class="row">
-        <button class="btn" id="startBtn">Старт</button>
-      </div>
-    </section>
+    <div class="game-container">
+        <h1>Blackjack</h1>
 
-    <!-- Игра -->
-    <section class="screen" id="quiz" hidden>
-      <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
-      <div class="counter" id="counter"></div>
-      <figure class="hero tilt" id="hero"><figcaption class="caption" id="heroCap"></figcaption></figure>
-      <div class="q" id="q" role="heading" aria-level="2"></div>
-      <div class="answers" id="answers" role="radiogroup" aria-label="Варианты ответа"></div>
-      <div class="meta" id="meta"></div>
-      <div class="row">
-        <button class="btn alt" id="nextBtn" disabled>Далее</button>
-        <button class="btn ghost" id="backBtn">Назад</button>
-      </div>
-    </section>
-
-    <!-- Результат -->
-    <section class="screen" id="result" hidden>
-      <h2 class="result-title" id="resTitle"></h2>
-      <p class="result-desc" id="resDesc"></p>
-      <div class="grid">
-        <div class="card">
-          <h3 style="margin:0 0 8px">Твои шкалы</h3>
-          <div class="stat"><span style="min-width:120px">Зависть к железу</span><div class="bar"><div class="val" id="sEnvy"></div></div></div>
-          <div class="stat"><span style="min-width:120px">Кредитная импульсивность</span><div class="bar"><div class="val" id="sDebt"></div></div></div>
-          <div class="stat"><span style="min-width:120px">Туалетная философия</span><div class="bar"><div class="val" id="sCope"></div></div></div>
+        <div class="game-info">
+            <h2>Рука Дилера (<span id="dealer-score">0</span>)</h2>
+            <div id="dealer-hand" class="hand"></div>
         </div>
-        <div class="card">
-          <h3 style="margin:0 0 8px">Ачивки</h3>
-          <div class="badges" id="badges"></div>
+
+        <div class="game-info">
+            <h2>Ваша Рука (<span id="player-score">0</span>)</h2>
+            <div id="player-hand" class="hand"></div>
         </div>
-      </div>
-      <div class="frog" id="frog" title="Секретная жаба"></div>
-      <div class="row">
-        <button class="btn" id="shareBtn">Поделиться</button>
-        <button class="btn alt" id="restartBtn">Ещё раз</button>
-      </div>
-    </section>
-  </div>
 
-  <div class="toast" id="toast"></div>
-  <canvas class="confetti" id="confetti" hidden></canvas>
+        <p id="message">Нажмите "Новая игра", чтобы начать.</p>
+        
+        <div class="player-actions">
+            <button id="hit-button">Еще</button>
+            <button id="stand-button">Хватит</button>
+            <button id="new-game-button">Новая игра</button>
+        </div>
+    </div>
 
-<script>
-/* ===== Next Gen 1.2 — огромный патч =====
-   — Новые шутки/ответы в стиле интернет‑юмора, но дружелюбно.
-   — Мем‑картинки в заголовках и ответах, предзагрузка.
-   — Усиленные анимации: 3D‑tilt для хедера, частицы при таче, конфетти на финише.
-   — Без звуков и вибраций. Приспособлено к iOS/Android.
-*/
+    <script>
+        // Игровой скрипт
+        const suits = ['♥', '♦', '♣', '♠'];
+        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
-/* Мем‑пул (можно заменить на свои пути) */
-const MEMES = [
-  'https://sfile.chatglm.cn/images-ppt/dc68f2522b8a.jpg',
-  'https://sfile.chatglm.cn/images-ppt/72d26cd3c9a2.jpg',
-  'https://sfile.chatglm.cn/images-ppt/d6ba94ccd270.jpg',
-  'https://sfile.chatglm.cn/images-ppt/94c6e701f06d.png',
-  'https://sfile.chatglm.cn/images-ppt/5842861121bb.jpg',
-  'https://sfile.chatglm.cn/images-ppt/4727ee8ef79d.jpeg',
-  'https://sfile.chatglm.cn/images-ppt/e459fb381b08.jpg',
-  'https://sfile.chatglm.cn/images-ppt/590bcaccd076.jpg',
-  'https://sfile.chatglm.cn/images-ppt/baf2a18ee76a.jpg',
-  'https://sfile.chatglm.cn/images-ppt/cfc3e245b2d7.jpg',
-];
-const pickMeme = ()=> MEMES[Math.floor(Math.random()*MEMES.length)];
-const preload = (url)=>{ const img=new Image(); img.decoding='async'; img.loading='lazy'; img.src=url };
+        let deck = [];
+        let playerHand = [];
+        let dealerHand = [];
+        let playerScore = 0;
+        let dealerScore = 0;
+        let gameInProgress = false;
 
-/* Вопросы/ответы (новые формулировки — лёгкая ирония, интернет‑вайб) */
-const Q = [
-  { q:'SSD на 2 ТБ — берёшь?', cap:'«Steam: 999+ обновлений. Ты: дай два терабайта»', a:[
-      {t:'Беру. Хочу жить без Тетриса с файлами', v:{e:1,d:0,c:0}},
-      {t:'Жду скидки, как патча первого дня', v:{e:0,d:0,c:1}},
-      {t:'В рассрочку? Да, как взрослый ребёнок', v:{e:1,d:2,c:0}},
-      {t:'Оставлю HDD как музей боли', v:{e:0,d:0,c:2}},
-  ]},
-  { q:'Друг собрал ПК мечты. Реакция?', cap:'«Он — ультра. Ты — интервент на средних»', a:[
-      {t:'Ставлю лайк, плачу внутри, шучу снаружи', v:{e:1,d:1,c:1}},
-      {t:'“Та хай…”. Апгрейжу носки и самооценку', v:{e:0,d:0,c:1}},
-      {t:'Собираю корзину на вдохе, на выдохе — кредит', v:{e:2,d:2,c:0}},
-      {t:'Иду тестить у него — отпускает через 30 FPS', v:{e:0,d:0,c:0}},
-  ]},
-  { q:'Отношения дали синюю экрану. Дальше?', cap:'«CTRL+ALT+Уважение к себе»', a:[
-      {t:'Выхожу из квеста без скандала', v:{e:0,d:0,c:2}},
-      {t:'Скоро буду: спидран одиночества с играми', v:{e:1,d:0,c:2}},
-      {t:'Retail‑терапия: видяха лечит всё (нет)', v:{e:1,d:2,c:0}},
-      {t:'Зал/книжка/друзья — патч к жизни', v:{e:0,d:0,c:1}},
-  ]},
-  { q:'Выходной мечты?', cap:'«IRL и URL в балансе»', a:[
-      {t:'Ассасин + готовлю что‑то съедобное', v:{e:0,d:0,c:1}},
-      {t:'6 часов сравниваю цены и страдаю красиво', v:{e:2,d:1,c:0}},
-      {t:'Улица/спорт/друзья, вечером рейд', v:{e:0,d:0,c:0}},
-      {t:'Сортир‑философ, мысли как RTX ON', v:{e:0,d:0,c:2}},
-  ]},
-  { q:'Носки в дырках. Что по плану?', cap:'«Апгрейд начинается с перефирии»', a:[
-      {t:'Шью — минус стыд, плюс бюджет', v:{e:0,d:0,c:1}},
-      {t:'Пачка новых с RGB настроением', v:{e:1,d:1,c:0}},
-      {t:'Кроссы спасут — вижу, не слышу', v:{e:0,d:0,c:0}},
-      {t:'Вторая жизнь: уборка системника', v:{e:0,d:0,c:2}},
-  ]},
-  { q:'S.T.A.L.K.E.R. 2 на горизонте', cap:'«Выброс эмоций: готовность 100%»', a:[
-      {t:'Предзаказ как обет: верю и жду', v:{e:1,d:1,c:0}},
-      {t:'Подожду пару патчей, я не спринтер', v:{e:0,d:0,c:1}},
-      {t:'Собираю ультра‑риг, даже если у меня кухня', v:{e:2,d:2,c:0}},
-      {t:'Перепрохожу классику, кайф стабилен', v:{e:0,d:0,c:1}},
-  ]},
-  { q:'Деньги закончились до апгрейда', cap:'«Баланс со счётом дружит лучше, чем RGB»', a:[
-      {t:'Б/у рынок + продаю старое — чистый профит', v:{e:0,d:0,c:1}},
-      {t:'Кредитка — мой финальный босс', v:{e:1,d:2,c:0}},
-      {t:'План Б, пауза лучше минуса', v:{e:0,d:0,c:2}},
-      {t:'Подработка‑квест ради мечты', v:{e:0,d:0,c:0}},
-  ]},
-  { q:'Курс «+100 FPS за день»', cap:'«Если звучит как магия — проверь договор»', a:[
-      {t:'Ютуб/форумы/доки — сначала база', v:{e:0,d:0,c:1}},
-      {t:'Покупаю на эмоциях, потом читаю отзывы', v:{e:1,d:2,c:0}},
-      {t:'В закладки, вернусь трезво', v:{e:0,d:0,c:2}},
-      {t:'Спрошу у своих, сравню по фактам', v:{e:0,d:0,c:0}},
-  ]},
-  { q:'Друг с новым телефоном', cap:'«Он снимает Луну, ты — реальность»', a:[
-      {t:'Рад за него. У меня и так всё летит', v:{e:0,d:0,c:0}},
-      {t:'Смотрю обзоры, считаю смысл апгрейда', v:{e:1,d:0,c:1}},
-      {t:'Рассрочка? Алло, банк', v:{e:1,d:2,c:0}},
-      {t:'Поменял батарею — и телефон ожил', v:{e:0,d:0,c:2}},
-  ]},
-  { q:'До зарплаты две недели', cap:'«Бэклог зовёт, кошелёк благодарит»', a:[
-      {t:'Инди‑алмазы + чай из кружки счастья', v:{e:0,d:0,c:1}},
-      {t:'Мониторю цены до рассвета, грущу красиво', v:{e:2,d:1,c:0}},
-      {t:'Оффлайн‑выходные: парк, люди, солнце', v:{e:0,d:0,c:2}},
-      {t:'Стримлю друзьям. Весело и бесплатно', v:{e:0,d:0,c:0}},
-  ]},
-  { q:'Ассасины vs. режим дня', cap:'«Сейв‑лоад IRL обязателен»', a:[
-      {t:'1‑2 миссии и спать по таймеру', v:{e:0,d:0,c:1}},
-      {t:'Марафон до утра. Ноль сожалений', v:{e:0,d:0,c:0}},
-      {t:'DLC по эмоциям — беру мгновенно', v:{e:0,d:2,c:0}},
-      {t:'Таймер‑лимит и воды стакан', v:{e:0,d:0,c:2}},
-  ]},
-  { q:'RGB‑подсветка', cap:'«Свет без смысла — просто свет»', a:[
-      {t:'Сначала БП/охлаждение, потом радуга', v:{e:0,d:0,c:1}},
-      {t:'RGB везде. Я — новогодняя ёлка', v:{e:1,d:1,c:0}},
-      {t:'Если красиво и дёшево — why not', v:{e:0,d:0,c:0}},
-      {t:'Мне бы FPS, а не глянец', v:{e:0,d:0,c:2}},
-  ]},
-  { q:'Новый монитор у друга', cap:'«Дюймы — не всё. Важна картинка и мозги»', a:[
-      {t:'Схожу глянуть IRL, сравню матрицы', v:{e:0,d:0,c:0}},
-      {t:'Сразу 32″ в корзину. Не торможу', v:{e:1,d:2,c:0}},
-      {t:'Добавляю в цели. Спокойно коплю', v:{e:1,d:0,c:1}},
-      {t:'Тюню свой: гамма/яркость/профили', v:{e:0,d:0,c:2}},
-  ]},
-  { q:'Игровое кресло', cap:'«Основа — спина. Остальное — скин»', a:[
-      {t:'Апгрейжу рабочее место целиком', v:{e:0,d:0,c:2}},
-      {t:'Беру хорошее на скидке', v:{e:0,d:0,c:1}},
-      {t:'Фулл прайс и рассрочка — мой путь', v:{e:0,d:2,c:0}},
-      {t:'Пока стул + перерывы по уму', v:{e:0,d:0,c:0}},
-  ]},
-];
+        // Получаем элементы DOM
+        const dealerHandEl = document.getElementById('dealer-hand');
+        const playerHandEl = document.getElementById('player-hand');
+        const dealerScoreEl = document.getElementById('dealer-score');
+        const playerScoreEl = document.getElementById('player-score');
+        const messageEl = document.getElementById('message');
+        const hitButton = document.getElementById('hit-button');
+        const standButton = document.getElementById('stand-button');
+        const newGameButton = document.getElementById('new-game-button');
 
-/* Ранги и тосты */
-const RANKS = [
-  {id:'calm', title:'🧊 Хладнокровный апгрейдер', desc:'Смотришь на железо трезво, деньги — под контролем, жизнь — не только FPS.'},
-  {id:'hybrid', title:'⚖️ Балансировщик', desc:'Между “хочу” и “надо” ты торгуешься с талантом. Кредит реже, голова чаще.'},
-  {id:'a_like', title:'💻 Почти Алексей', desc:'Глаза горят, корзина тоже. План + дисциплина — и будет топ.'},
-  {id:'full_a', title:'🧦 100% Алексей', desc:'Живёшь апгрейдом. Добавь режима — и жизнь станет ровнее.'}
-];
-const TOASTS = [
-  'Лучший апгрейд — тот, что решает боль.',
-  'RGB без БП — как тюнинг без мотора.',
-  'Скидка — не причина, а проверка нервов.',
-  'Жадный до FPS? Проверь охлаждение.',
-  'Иногда “подождать” — это навык S‑ранга.',
-  'Б/у рынок — тёмный лес с золотом.',
-  'Сохраняйся и в реальности.'
-];
+        // Создание колоды
+        function createDeck() {
+            deck = [];
+            for (let suit of suits) {
+                for (let value of values) {
+                    deck.push({ suit, value });
+                }
+            }
+            return deck;
+        }
 
-/* Состояние/элементы */
-let i=0; let envy=0, debt=0, cope=0; let picked=null; let streakSame=0; let selIndex=[]; let lastIdx=null;
-const $ = s => document.querySelector(s);
-const start = $('#start'); const quiz = $('#quiz'); const result = $('#result');
-const bar = $('#bar'); const counter = $('#counter'); const hero = $('#hero'); const heroCap = $('#heroCap');
-const qEl = $('#q'); const answers = $('#answers'); const meta = $('#meta');
-const nextBtn = $('#nextBtn'); const backBtn = $('#backBtn'); const startBtn = $('#startBtn'); const restartBtn = $('#restartBtn');
-const resTitle = $('#resTitle'); const resDesc = $('#resDesc'); const sEnvy = $('#sEnvy'); const sDebt = $('#sDebt'); const sCope = $('#sCope');
-const badges = $('#badges'); const frog = $('#frog'); const toast = $('#toast'); const shareBtn = $('#shareBtn');
-const confetti = $('#confetti'); const ctx = confetti.getContext('2d');
+        // Перетасовка колоды
+        function shuffleDeck(deck) {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
 
-/* Хэндлеры */
-startBtn.addEventListener('click',()=>{ i=0; envy=0; debt=0; cope=0; streakSame=0; picked=null; selIndex=[]; lastIdx=null; hide(start); show(quiz); render() });
-backBtn.addEventListener('click',()=>{ if(i===0){ hide(quiz); show(start); return } i=Math.max(0,i-1); recompute(); frog.style.display='none'; render() });
-restartBtn.addEventListener('click',()=>{ hide(result); show(start) });
-nextBtn.addEventListener('click',()=>{ i++; if(i<Q.length) render(); else finish() });
+        // Вычисление очков в руке
+        function getHandValue(hand) {
+            let score = 0;
+            let numAces = 0;
+            for (let card of hand) {
+                if (card.value === 'A') {
+                    numAces++;
+                    score += 11;
+                } else if (['K', 'Q', 'J'].includes(card.value)) {
+                    score += 10;
+                } else {
+                    score += parseInt(card.value);
+                }
+            }
+            // Корректировка тузов, если счет > 21
+            while (score > 21 && numAces > 0) {
+                score -= 10;
+                numAces--;
+            }
+            return score;
+        }
 
-function recompute(){ envy=debt=cope=0; for(let k=0;k<i;k++){ const sel = selIndex[k]; if(sel!=null){ const v=Q[k].a[sel].v; envy+=v.e; debt+=v.d; cope+=v.c } } }
+        // Отображение карты
+        function renderCard(card, element, isHidden = false) {
+            const cardDiv = document.createElement('div');
+            cardDiv.classList.add('card', `suit-${card.suit}`);
+            if (isHidden) {
+                cardDiv.classList.add('hidden');
+            } else {
+                cardDiv.textContent = card.value;
+                cardDiv.setAttribute('data-value', `${card.value} ${card.suit}`);
+                const before = document.createElement('span');
+                before.textContent = card.suit;
+                const after = document.createElement('span');
+                after.textContent = card.suit;
+                cardDiv.prepend(before);
+                cardDiv.append(after);
+            }
+            element.appendChild(cardDiv);
+        }
+        
+        // Обновление интерфейса
+        function updateUI() {
+            // Очищаем руки
+            dealerHandEl.innerHTML = '';
+            playerHandEl.innerHTML = '';
 
-/* Рендер шага */
-function render(){
-  nextBtn.disabled = true; picked=null; answers.innerHTML=''; meta.innerHTML='';
-  const total = Q.length; const q = Q[i];
-  const progress = ((i+1)/total)*100; bar.style.width = progress.toFixed(1)+'%';
-  counter.textContent = `Вопрос ${i+1} из ${total}`;
+            // Отображаем карты дилера
+            for (let i = 0; i < dealerHand.length; i++) {
+                renderCard(dealerHand[i], dealerHandEl, i === 0 && gameInProgress);
+            }
 
-  // Заголовочный мем + подпись
-  const heroImg = pickMeme(); hero.style.backgroundImage = `url('${heroImg}')`; heroCap.textContent = q.cap || '';
-  qEl.textContent = q.q;
+            // Отображаем карты игрока
+            playerHand.forEach(card => renderCard(card, playerHandEl));
+            
+            // Обновляем счет
+            playerScore = getHandValue(playerHand);
+            dealerScore = getHandValue(dealerHand);
+            
+            playerScoreEl.textContent = playerScore;
+            if (gameInProgress) {
+                dealerScoreEl.textContent = getHandValue([dealerHand[1]]); // Показываем очки только второй карты дилера
+            } else {
+                dealerScoreEl.textContent = dealerScore;
+            }
 
-  // подсказки
-  (tipsFor(i)).forEach(t=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=t; meta.appendChild(c) });
+            // Проверка на Blackjack у игрока при старте
+            if (playerScore === 21 && playerHand.length === 2) {
+                endGame();
+            }
+        }
 
-  // ответы + картинки, предзагрузка
-  q.a.forEach((ans,idx)=>{
-    const img = pickMeme(); if(idx<2) preload(img);
-    const row = document.createElement('div'); row.className='ans';
-    row.innerHTML = `
-      <img src="${img}" alt="мем ПК" loading="lazy" decoding="async">
-      <div style="display:flex;align-items:center;gap:8px">
-        <input type="radio" id="a${i}_${idx}" name="q${i}" value="${idx}">
-        <label for="a${i}_${idx}">${ans.t}</label>
-      </div>`;
-    row.addEventListener('click',(e)=>pick(idx,row,ans.v,e));
-    answers.appendChild(row);
-  });
+        // Начало новой игры
+        function newGame() {
+            gameInProgress = true;
+            createDeck();
+            shuffleDeck(deck);
+            
+            playerHand = [deck.pop(), deck.pop()];
+            dealerHand = [deck.pop(), deck.pop()];
+            
+            messageEl.textContent = '';
+            hitButton.disabled = false;
+            standButton.disabled = false;
+            
+            updateUI();
+        }
 
-  // tilt‑эффект для hero
-  hero.onmousemove = (e)=>{
-    const r = hero.getBoundingClientRect(); const x = (e.clientX - r.left)/r.width - .5; const y = (e.clientY - r.top)/r.height - .5;
-    hero.style.transform = `perspective(700px) rotateY(${x*6}deg) rotateX(${ -y*6}deg)`; qEl.style.setProperty('--mx', `${(x+.5)*100}%`)
-  };
-  hero.onmouseleave = ()=>{ hero.style.transform='perspective(700px) rotateY(0deg) rotateX(0deg)'; };
+        // Действие "Еще" (Hit)
+        function hit() {
+            if (!gameInProgress) return;
+            playerHand.push(deck.pop());
+            updateUI();
+            if (playerScore > 21) {
+                messageEl.textContent = 'Перебор! Вы проиграли.';
+                endGame();
+            }
+        }
 
-  // восстановить выбор
-  if(selIndex[i]!=null){ const el = answers.children[selIndex[i]]; if(el){ el.classList.add('selected'); [...answers.children].forEach((x,k)=>k!==selIndex[i]&&x.classList.add('disabled')); nextBtn.disabled=false } }
-}
+        // Действие "Хватит" (Stand)
+        function stand() {
+            if (!gameInProgress) return;
+            gameInProgress = false; // Игра переходит к дилеру
 
-/* Клик по ответу: частицы + логика */
-function pick(idx,row,v,evt){ if(picked!=null) return; picked=idx; selIndex[i]=idx;
-  [...answers.children].forEach((el,k)=>{ if(k===idx) el.classList.add('selected'); else el.classList.add('disabled') });
-  // пасхалка
-  if(lastIdx===idx){ streakSame++; if(streakSame>=2) frog.style.display='block' } else { streakSame=0; frog.style.display='none' }
-  lastIdx = idx;
-  // очки
-  envy += v.e; debt += v.d; cope += v.c; nextBtn.disabled=false;
-  // частицы
-  burst(row, evt?.clientX, evt?.clientY);
-  toastMsg(randomPick(TOASTS), 1400);
-}
+            // Показать скрытую карту дилера
+            dealerHandEl.innerHTML = '';
+            dealerHand.forEach(card => renderCard(card, dealerHandEl));
+            dealerScoreEl.textContent = getHandValue(dealerHand);
+            
+            // Дилер берет карты до 17 очков
+            while (getHandValue(dealerHand) < 17) {
+                dealerHand.push(deck.pop());
+                renderCard(dealerHand[dealerHand.length-1], dealerHandEl);
+            }
+            
+            dealerScore = getHandValue(dealerHand);
+            dealerScoreEl.textContent = dealerScore;
+            
+            determineWinner();
+        }
+        
+        // Определение победителя
+        function determineWinner() {
+            playerScore = getHandValue(playerHand);
+            dealerScore = getHandValue(dealerHand);
 
-/* Финиш: ранги, ачивки, конфетти */
-function finish(){ hide(quiz); show(result);
-  const max = 2*Q.length; const pe = Math.round((envy/max)*100); const pd = Math.round((debt/max)*100); const pc = Math.round((cope/max)*100);
-  sEnvy.style.width = pe+'%'; sDebt.style.width = pd+'%'; sCope.style.width = pc+'%';
-  const score = pe*0.4 + pd*0.4 + pc*0.2; let rank = RANKS[0];
-  if(score>35 && score<=55) rank=RANKS[1]; else if(score>55 && score<=75) rank=RANKS[2]; else if(score>75) rank=RANKS[3];
-  resTitle.textContent = rank.title; resDesc.textContent = rank.desc;
-  badges.innerHTML=''; if(pe>=70) addBadge('Железный завистник'); if(pd>=60) addBadge('Импульс кредитки'); if(pc>=60) addBadge('Мыслитель санузла'); if(pe<=25 && pd<=25) addBadge('Стальной характер'); if(score>=80) addBadge('Алексей Supreme');
-  confettiShow();
-}
+            if (playerScore > 21) {
+                messageEl.textContent = 'Перебор! Вы проиграли.';
+            } else if (dealerScore > 21) {
+                messageEl.textContent = 'У дилера перебор! Вы выиграли!';
+            } else if (playerScore > dealerScore) {
+                messageEl.textContent = 'Вы выиграли!';
+            } else if (dealerScore > playerScore) {
+                messageEl.textContent = 'Вы проиграли.';
+            } else {
+                messageEl.textContent = 'Ничья.';
+            }
+            
+            endGame(false);
+        }
 
-/* Сервисные */
-function addBadge(text){ const b=document.createElement('span'); b.className='badge'; b.textContent=text; badges.appendChild(b) }
-function randomPick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
-function toastMsg(text,ms=1200){ toast.textContent=text; toast.style.display='block'; clearTimeout(toast._t); toast._t=setTimeout(()=>toast.style.display='none', ms) }
-function show(el){ el.hidden=false } function hide(el){ el.hidden=true }
-function tipsFor(i){
-  const map = {
-    0:['Не все терабайты одинаково полезны.'],
-    1:['Честность — это зависть молча.'],
-    2:['Иногда лучший апгрейд — уйти в офлайн.'],
-    3:['Играешь и живёшь — оба апгрейда важны.'],
-    4:['Большие апгрейды начинаются с мелочей.'],
-    5:['Грядёт выброс — держи шапку.'],
-    6:['Есть путь без минусов по счёту.'],
-    7:['“+100 FPS за день” — проверь мелкий шрифт.'],
-    8:['Телефон — инструмент, не статус.'],
-    9:['Backlog игр — бесплатное золото.'],
-    10:['Сохраняйся и в реальности.'],
-    11:['Свет — хорошо, смысл — лучше.'],
-    12:['Дюймы — не всё. Важна матрица.'],
-    13:['Спина важнее подушки.']
-  }; return map[i]||[];
-}
+        // Завершение раунда
+        function endGame(isImmediate = true) {
+            if (isImmediate) {
+                // Если игра завершается сразу (например, перебор у игрока)
+                gameInProgress = false;
+            }
+            
+            // Показываем скрытую карту дилера в конце
+            dealerHandEl.innerHTML = '';
+            dealerHand.forEach(card => renderCard(card, dealerHandEl));
+            dealerScoreEl.textContent = getHandValue(dealerHand);
 
-/* Частицы при выборе */
-function burst(node, cx, cy){
-  const rect = node.getBoundingClientRect();
-  const x = (cx||rect.left+rect.width/2) - rect.left; const y = (cy||rect.top+rect.height/2) - rect.top;
-  for(let k=0;k<14;k++){
-    const s = document.createElement('i'); s.className='spark'; s.style.left = x+'px'; s.style.top = y+'px';
-    const a = Math.random()*Math.PI*2; const d = 60 + Math.random()*60;
-    s.style.setProperty('--dx', Math.cos(a)*d + 'px'); s.style.setProperty('--dy', Math.sin(a)*d + 'px');
-    s.style.color = ['#7dffb0','#60a5fa','#b794f4','#fbbf24','#fb7185'][k%5]; node.appendChild(s);
-    setTimeout(()=> s.remove(), 700);
-  }
-}
+            hitButton.disabled = true;
+            standButton.disabled = true;
+        }
 
-/* Конфетти холст */
-function confettiShow(){ confetti.width = innerWidth; confetti.height = innerHeight; confetti.hidden=false; ctx.clearRect(0,0,confetti.width,confetti.height);
-  const pieces=[]; const colors=['#7dffb0','#60a5fa','#b794f4','#fbbf24','#fb7185'];
-  for(let k=0;k<110;k++){
-    pieces.push({x: Math.random()*confetti.width, y: -10-Math.random()*200, vy: 2+Math.random()*4, vx: -1+Math.random()*2, w:6+Math.random()*6, h:10+Math.random()*10, c: colors[k%colors.length], r: Math.random()*6});
-  }
-  let t=0; const tick=()=>{ ctx.clearRect(0,0,confetti.width,confetti.height); t+=1/60;
-    for(const p of pieces){ p.x+=p.vx; p.y+=p.vy; p.r+=0.06; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore(); }
-    if(t<2.2) requestAnimationFrame(tick); else confetti.hidden=true; };
-  requestAnimationFrame(tick);
-}
+        // Навешиваем обработчики событий
+        newGameButton.addEventListener('click', newGame);
+        hitButton.addEventListener('click', hit);
+        standButton.addEventListener('click', stand);
 
-/* Шеринг результата */
-shareBtn.addEventListener('click', async ()=>{
-  const t = resTitle.textContent; const d = resDesc.textContent; const url = location.href;
-  if(navigator.share){ try{ await navigator.share({ title:t, text:`${t}
-${d}`, url }) }catch(e){} }
-  else{ try{ await navigator.clipboard.writeText(`${t}
-${d}
-${url}`); toastMsg('Скопировано в буфер') }catch(e){ alert('Скопируй вручную: '+t+' — '+d) } }
-});
-</script>
+        // Инициализация кнопок при загрузке
+        hitButton.disabled = true;
+        standButton.disabled = true;
+    </script>
 </body>
 </html>
